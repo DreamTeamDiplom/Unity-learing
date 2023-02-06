@@ -1,0 +1,41 @@
+ManifestFileVersion: 0
+CRC: 1317507009
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 64ca0300645909e702973541727b4b59
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: c1f9ea5659b442149a59fff5c75e846e
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 49
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 84a92b25f83d49b9bc132d206b370281, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_SpriteCharacter
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_SpriteGlyph
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.FaceInfo
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.GlyphMetrics
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.GlyphRect
+Assets:
+- "Assets/AssetBundles/\u0410\u043D\u0430\u043B\u043E\u0433 Mario/Merge Sprite.asset"
+- "Assets/AssetBundles/\u0410\u043D\u0430\u043B\u043E\u0433 Mario/\u0410\u043D\u0430\u043B\u043E\u0433
+  Mario.json"
+Dependencies: []
