@@ -23,8 +23,8 @@ public class AllCourses : MonoBehaviour
     private readonly List<GameObject> listCourse = new List<GameObject>();
     private void Awake()
     {
-        DirectoryInfo dir = new DirectoryInfo(Path.Combine(Application.streamingAssetsPath, "Courses"));
-        foreach (var (folder, file) in dir.GetDirectories().SelectMany(folder => folder.GetFiles().Where(file => file.Extension == ".json").Select(file => (folder, file))))
+        DirectoryInfo dirInfo = new DirectoryInfo(Path.Combine(Application.streamingAssetsPath, "Courses"));
+        foreach (var (folder, file) in dirInfo.GetDirectories().SelectMany(folder => folder.GetFiles().Where(file => file.Extension == ".json").Select(file => (folder, file))))
         {
             string jsonString = File.ReadAllText(file.FullName);
             var course = JsonUtility.FromJson<Course>(jsonString);
@@ -37,7 +37,6 @@ public class AllCourses : MonoBehaviour
                 if (myCourse.Finished)
                 {
                     objCard = Instantiate(cardComplite);
-                    //StartCoroutine(LoadTextureFromServer(FullPathIconCourse, objCard, course));
                     var infoCourse = objCard.transform.GetChild(1);
                     infoCourse.GetChild(0).GetComponentInChildren<Text>().text = course.Title;
                     infoCourse.GetChild(1).GetComponentInChildren<Text>().text = course.Lessons.Count.ToString() + " уроков";
@@ -46,7 +45,6 @@ public class AllCourses : MonoBehaviour
                 else
                 {
                     objCard = Instantiate(cardStart);
-                    //StartCoroutine(LoadTextureFromServer(FullPathIconCourse, objCard, course));
                     var infoCourse = objCard.transform.GetChild(1);
                     infoCourse.GetChild(0).GetComponentInChildren<Text>().text = course.Title;
                     infoCourse.GetChild(1).GetChild(0).GetComponentInChildren<Text>().text = course.Lessons.Count.ToString() + " уроков";
@@ -105,6 +103,6 @@ public class AllCourses : MonoBehaviour
     {
         Sprite sprite = Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100.0f);
         course.Icon = sprite;
-        objCard.transform.GetChild(0).GetChild(0).GetComponent<Image>().sprite = sprite;
+        objCard.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Image>().sprite = sprite;
     }
 }
