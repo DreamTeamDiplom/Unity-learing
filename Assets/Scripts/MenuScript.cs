@@ -97,6 +97,8 @@ public class MenuScript : MonoBehaviour
     {
         foreach (var gameObject in new GameObject[] { _myProfile, _allCourses, _myCourses, _setting, _exitProfile })
         {
+            //Debug.LogWarning(gameObject.name);
+            //Debug.LogWarning(scene.name);
             gameObject?.SetActive(!(scene.name == "MainScene"));
         }
     }

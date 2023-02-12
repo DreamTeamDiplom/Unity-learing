@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 public class ButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler,IPointerClickHandler, ISelectHandler, IDeselectHandler
 {
-    /* This is Sergey)) */
+    //This is Svet's comment
     private Vector2 pos;
     private Tween click, hover;
 
