@@ -56,7 +56,7 @@ public class MenuScript : MonoBehaviour
         _exitProfileButton.onClick.AddListener(() => OnButtonClick("MainScene"));
 
         _exitButton = _exit.GetComponentInChildren<Button>();
-        _exitButton.onClick.AddListener(() => Application.Quit());
+        //_exitButton.onClick.AddListener(() => Application.Quit());
 
         _menuTransform = (RectTransform)_menuWindow.transform.GetChild(0);
         
@@ -97,6 +97,8 @@ public class MenuScript : MonoBehaviour
     {
         foreach (var gameObject in new GameObject[] { _myProfile, _allCourses, _myCourses, _setting, _exitProfile })
         {
+            //Debug.LogWarning(gameObject.name);
+            //Debug.LogWarning(scene.name);
             gameObject?.SetActive(!(scene.name == "MainScene"));
         }
     }
@@ -105,6 +107,11 @@ public class MenuScript : MonoBehaviour
     {
         _menuTransform.DOAnchorPosX(-_menuTransform.sizeDelta.x, .5f).OnComplete(() => _menuWindow.SetActive(false));
         _message.SetActive(false);
+    }
+
+    public void ApplicationQuit()
+    {
+        Application.Quit();
     }
 
     public void OnPointerEnter(GameObject gameObject)
