@@ -7,17 +7,18 @@ using System.IO;
 [Serializable]
 public class Profile
 {
-    private string pathIcon;
     private string name;
     private string password;
     private string email;
+    private string pathIcon;
     private string path;
+    private ThemeEnum theme = ThemeEnum.Black;
     private List<ProfileCourse> courses;
 
     [NonSerialized] private Sprite icon;
 
     /// <summary>
-    /// Путь к картинке на ПК
+    /// РџСѓС‚СЊ Рє РєР°СЂС‚РёРЅРєРµ РЅР° РџРљ
     /// </summary>
     public string PathIcon
     {
@@ -26,7 +27,7 @@ public class Profile
     }
 
     /// <summary>
-    /// Имя пользователя
+    /// РРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
     /// </summary>
     public string Name
     {
@@ -35,7 +36,7 @@ public class Profile
     }
 
     /// <summary>
-    /// Пароль пользователя (точнее хэш)
+    /// РџР°СЂРѕР»СЊ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ (С‚РѕС‡РЅРµРµ С…СЌС€)
     /// </summary>
     public string Password
     {
@@ -43,7 +44,7 @@ public class Profile
         set => password = value;
     }
     /// <summary>
-    /// Email пользователя, для востановления пароля
+    /// Email РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ, РґР»СЏ РІРѕСЃС‚Р°РЅРѕРІР»РµРЅРёСЏ РїР°СЂРѕР»СЏ
     /// </summary>
     public string Email
     {
@@ -52,7 +53,7 @@ public class Profile
     }
 
     /// <summary>
-    /// Путь к папке пользователя, где хранятся все его файлы с курсамм
+    /// РџСѓС‚СЊ Рє РїР°РїРєРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ, РіРґРµ С…СЂР°РЅСЏС‚СЃСЏ РІСЃРµ РµРіРѕ С„Р°Р№Р»С‹ СЃ РєСѓСЂСЃР°РјРё
     /// </summary>
     public string PathFolder
     {
@@ -61,7 +62,7 @@ public class Profile
     }
 
     /// <summary>
-    /// Иконка пользователя
+    /// РРєРѕРЅРєР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
     /// </summary>
     public Sprite Icon
     {
@@ -69,8 +70,14 @@ public class Profile
         set => icon = value;
     }
 
+    public ThemeEnum Theme
+    {
+        get => theme;
+        set => theme = value;
+    }
+
     /// <summary>
-    /// Список курсов пользователя
+    /// РЎРїРёСЃРѕРє РєСѓСЂСЃРѕРІ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
     /// </summary>
     public List<ProfileCourse> Courses
     {

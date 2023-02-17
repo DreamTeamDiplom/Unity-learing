@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
@@ -7,16 +8,12 @@ using UnityEngine.UI;
 
 public class ProfileCourses : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject infoProfile;
-    [SerializeField]
-    private GameObject prefabCourse;
-    [SerializeField]
-    private GameObject prefabLine;
-    [SerializeField]
-    private GameObject activeList;
-    [SerializeField]
-    private GameObject finishList;
+    [SerializeField] private GameObject infoProfile;
+    [SerializeField] private GameObject prefabCourse;
+    [SerializeField] private GameObject prefabCompleteLine;
+    [SerializeField] private GameObject prefabUncompleteLine;
+    [SerializeField] private GameObject activeList;
+    [SerializeField] private GameObject finishList;
 
     private Text nameProfile;
     private Image icon;
@@ -38,16 +35,14 @@ public class ProfileCourses : MonoBehaviour
                 var indicator = courseObj.transform.GetChild(1);
                 foreach (var lesson in courseProfile.Course.Lessons)
                 {
-                    var lineObj = Instantiate(prefabLine);
+                    GameObject lineObj;
                     if (lesson.Finished)
                     {
-                        lineObj.GetComponent<Image>().color = Color.green;
+                        lineObj = Instantiate(prefabCompleteLine);
                     }
                     else
                     {
-                        //if (courseProfile.LastLesson == null)
-                        //    courseProfile.LastLesson = lesson;
-                        lineObj.GetComponent<Image>().color = Color.gray;
+                        lineObj = Instantiate(prefabUncompleteLine);
                     }
                     lineObj.transform.SetParent(indicator);
 
@@ -75,19 +70,25 @@ public class ProfileCourses : MonoBehaviour
             }
         }
 
-        IEnumerator LoadTextureFromServer(GameObject courseObj, ProfileCourse course)
-        {
-            var request = UnityWebRequestTexture.GetTexture(course.Course.PathIcon);
-            yield return request.SendWebRequest();
-            var texture = DownloadHandlerTexture.GetContent(request);
-            var sprite = Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100.0f);
-            course.Course.Icon = sprite;
-            courseObj.transform.GetChild(0).GetChild(0).GetChild(0).GetComponentInChildren<Image>().sprite = course.Course.Icon;
-            request.Dispose();
-        }
+        
         //var line = indicator.transform.GetChild(0);
         /* Цилк перебора */
 
+    }
+
+    private IEnumerator LoadTextureFromServer(GameObject courseObj, ProfileCourse course)
+    {
+        var request = UnityWebRequestTexture.GetTexture(course.Course.PathIcon);
+        yield return request.SendWebRequest();
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            var texture = DownloadHandlerTexture.GetContent(request);
+            var sprite = Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100.0f);
+            course.Course.Icon = sprite;
+            courseObj.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).GetComponent<Image>().sprite = course.Course.Icon;
+        }
+        
+        request.Dispose();
     }
 }
 

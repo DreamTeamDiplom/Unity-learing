@@ -13,17 +13,25 @@ public class DropdownScript : MonoBehaviour
     private GameObject list;
 
     private float timeAnimation = 0.3f;
+
+    private void Awake()
+    {
+        if (list.transform.localScale.y == 0)
+        {
+            arrow.transform.DORotate(Vector3.forward * -180, 0);
+        }
+    }
     public void ChangeArrow()
     {
         if (list.transform.localScale.y == 1)
         {
-            arrow.transform.DORotate(Vector3.zero, timeAnimation);
+            arrow.transform.DORotate(Vector3.forward * -180, timeAnimation);
             list.transform.DOScaleY(0, timeAnimation).OnUpdate(() => LayoutRebuilder.MarkLayoutForRebuild((RectTransform)transform));
         }
         else
         {
             list.SetActive(true);
-            arrow.transform.DORotate(Vector3.forward * -180, timeAnimation);
+            arrow.transform.DORotate(Vector3.zero, timeAnimation);
             list.transform.DOScaleY(1, timeAnimation).OnUpdate(() => LayoutRebuilder.MarkLayoutForRebuild((RectTransform)transform));
         }
     }

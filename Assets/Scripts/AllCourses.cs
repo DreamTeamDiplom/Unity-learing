@@ -28,7 +28,8 @@ public class AllCourses : MonoBehaviour
         {
             string jsonString = File.ReadAllText(file.FullName);
             var course = JsonUtility.FromJson<Course>(jsonString);
-            string fullPathIconCourse = Path.Combine(folder.FullName, course.PathIcon);
+            //string fullPathIconCourse = Path.Combine(folder.FullName, course.PathIcon);
+            string fullPathIconCourse = course.PathIcon;
             GameObject objCard = null;
             if (CurrentProfile.Profile.Courses.Exists(x => x.Course.Title.Contains(course.Title)))
             {
@@ -95,8 +96,11 @@ public class AllCourses : MonoBehaviour
     {
         var request = UnityWebRequestTexture.GetTexture(url);
         yield return request.SendWebRequest();
-        var texture = DownloadHandlerTexture.GetContent(request);
-        SetSprite(objCard, texture, course);
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            var texture = DownloadHandlerTexture.GetContent(request);
+            SetSprite(objCard, texture, course);
+        }
         request.Dispose();
     }
     private void SetSprite(GameObject objCard, Texture2D texture, Course course)

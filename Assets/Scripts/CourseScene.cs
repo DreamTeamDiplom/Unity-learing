@@ -124,10 +124,7 @@ public class CourseScene : MonoBehaviour
         }
         LayoutRebuilder.MarkLayoutForRebuild((RectTransform)objVideoPlayer.transform.parent);
 
-        var contentSizeFitter = descriptionLesson.gameObject.GetComponent<ContentSizeFitter>();
-        contentSizeFitter.enabled = false;
-        contentSizeFitter.enabled = true;
-
+        Canvas.ForceUpdateCanvases();
         LayoutRebuilder.MarkLayoutForRebuild((RectTransform)descriptionLesson.gameObject.transform);
     }
 

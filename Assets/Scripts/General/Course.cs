@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -26,7 +27,10 @@ public class Course
     }
     public string PathIcon
     {
-        get => pathIcon;
+        get
+        {
+            return Path.Combine(new string[] { Application.streamingAssetsPath, "Courses", title, pathIcon });
+        }
         //set => pathIcon = value;
     }
     public List<Lesson> Lessons

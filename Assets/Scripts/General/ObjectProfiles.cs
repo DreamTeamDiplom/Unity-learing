@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
@@ -57,9 +58,7 @@ public class ObjectProfiles : ScriptableObject
     /// <param name="course">Курс</param>
     public void AddCourse(Course course)
     {
-        var profile = _profiles.Find(x => x.PathFolder == CurrentProfile.Profile.PathFolder);
-        profile.Courses.Add(new ProfileCourse(course));
-        SaveData();
+        AddCourse(new ProfileCourse(course));
     }
 
     /// <summary>
@@ -68,10 +67,26 @@ public class ObjectProfiles : ScriptableObject
     /// <param name="course">Курс</param>
     public void AddCourse(ProfileCourse course)
     {
-        Debug.Log(CurrentProfile.Profile.PathFolder);
         var profile = _profiles.Find(x => x.PathFolder == CurrentProfile.Profile.PathFolder);
         profile.Courses.Add(course);
+        var fromDir = Path.Combine(Application.streamingAssetsPath, "Courses", course.Course.Title);
+        var toDir = Path.Combine(CurrentProfile.Profile.PathFolder, course.Course.Title);
+        CopyDir(fromDir, toDir);
         SaveData();
+    }
+
+    private void CopyDir(string fromDir, string toDir)
+    {
+        Directory.CreateDirectory(toDir);
+        foreach (string s1 in Directory.GetFiles(fromDir).Where(f => f.IndexOf(".meta") == -1))
+        {
+            string s2 = Path.Combine(toDir, Path.GetFileName(s1));
+            File.Copy(s1, s2);
+        }
+        foreach (string s in Directory.GetDirectories(fromDir))
+        {
+            CopyDir(s,  Path.Combine(toDir, Path.GetFileName(s)));
+        }
     }
 
     /// <summary>

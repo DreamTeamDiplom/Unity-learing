@@ -7,9 +7,6 @@ using Unity.VisualScripting;
 
 public class SliderTheme : MonoBehaviour
 {
-    public static Themes theme;
-
-
     [SerializeField] GameObject _circle;
     [SerializeField] GameObject _text;
 
@@ -48,10 +45,5 @@ public class SliderTheme : MonoBehaviour
             _text.GetComponent<Text>().text = "Тёмная";
         }
         Theme.Instance.Change();
-    }
-
-    public void OnButtonSlider()
-    {
-        Init();
     }
 }
