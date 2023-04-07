@@ -1,5 +1,4 @@
 using DG.Tweening;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,7 +24,7 @@ public class Video : MonoBehaviour
         public Image button;
         public Sprite on;
         public Sprite off;
-        public Slider sliderVolume;
+        public UnityEngine.UI.Slider sliderVolume;
     }
 
     [Serializable]
@@ -54,7 +53,7 @@ public class Video : MonoBehaviour
     [SerializeField]
     private VideoPlayer vPlayer;
     [SerializeField]
-    private Slider sliderVideo;
+    private UnityEngine.UI.Slider sliderVideo;
     [SerializeField]
     private GameObject viewPort;
     [SerializeField]
@@ -167,7 +166,7 @@ public class Video : MonoBehaviour
         }
     }
     /// <summary>
-    /// Функция срабатывает при нажатии на кнопку Масштабирование
+    /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     /// </summary>
     public void ScalingVideo()
     {

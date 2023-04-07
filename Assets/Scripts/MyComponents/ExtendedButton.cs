@@ -7,20 +7,23 @@ using UnityEngine.UI;
 [AddComponentMenu("UI/Button Extended", 31)]
 public class ExtendedButton : Button
 {
-    private Vector2 pos;
-    private Tween click, hover;
+    private Vector2 _position;
+    private Tween _tweenClick, _tweenHover;
+    private bool _isAnimation;
 
     protected override void OnEnable()
     {
         if (Application.isPlaying)
         {
             base.OnEnable();
-            StartCoroutine(Sleep());
+            StartCoroutine(InitAnimations());
+
+            
         }
     }
     protected override void OnDisable()
     {
-        hover.Pause();
+        _tweenHover.Pause();
     }
 
 #if UNITY_EDITOR
@@ -30,44 +33,54 @@ public class ExtendedButton : Button
     }
 #endif
 
-    private IEnumerator Sleep()
+    private IEnumerator InitAnimations()
     {
         yield return new WaitForSeconds(0.5f);
-        pos = GetComponent<RectTransform>().localPosition;
-        hover = transform.DOLocalMove(pos + Vector2.up, 0.2f).SetLoops(-1, LoopType.Yoyo).Pause();
-        click = transform.DOScale(new Vector2(0.8f, 0.8f), 0.2f).SetLoops(2, LoopType.Yoyo).SetAutoKill(false).Pause();
+        _position = GetComponent<RectTransform>().localPosition;
+        _tweenHover = transform.DOLocalMove(_position + Vector2.up, 0.2f).SetLoops(-1, LoopType.Yoyo).Pause();
+        _tweenClick = transform.DOScale(new Vector2(0.8f, 0.8f), 0.2f).SetLoops(2, LoopType.Yoyo).SetAutoKill(false).Pause();
+    }
+
+    private bool GetAnimation()
+    {
+        if (PlayerPrefs.HasKey("Animation"))
+        {
+            return PlayerPrefs.GetInt("Animation") == 1;
+        }
+        else
+        {
+            return true;
+        }
     }
     public override void OnPointerEnter(PointerEventData eventData)
     {
         base.OnPointerEnter(eventData);
-        hover.Play();
+
+        if (GetAnimation())
+        {
+            _tweenHover.Play();
+        }
     }
 
     public override void OnPointerExit(PointerEventData eventData)
     {
         base.OnPointerExit(eventData);
-        hover.Pause();
+        if (GetAnimation())
+        {
+            _tweenHover.Pause();
+        }
     }
 
     public override void OnPointerClick(PointerEventData eventData)
     {
         base.OnPointerClick(eventData);
-        if (!click.IsPlaying())
-            click.Restart();
+        if (GetAnimation() && !_tweenClick.IsPlaying())
+        {
+            _tweenClick.Restart();
+        }
+            
     }
 
-    //public override void OnSelect(BaseEventData eventData)
-    //{
-    //    base.OnSelect(eventData);
-    //    hover.Play();
-    //}
-
-    //public override void OnDeselect(BaseEventData eventData)
-    //{
-    //    base.OnDeselect(eventData);
-    //    hover.Pause();
-    //}
-
-
+    
 }
 

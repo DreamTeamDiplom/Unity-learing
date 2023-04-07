@@ -28,49 +28,63 @@ public class AllCourses : MonoBehaviour
         {
             string jsonString = File.ReadAllText(file.FullName);
             var course = JsonUtility.FromJson<Course>(jsonString);
+
+            //var courseProfile = CurrentProfile.Profile.Courses.FirstOrDefault(f => f.Title == course.Title);
+            //if (courseProfile == null)
+            //{
+            //    continue;
+            //}
+            //for (int i = 0; i < course.Lessons.Count; i++)
+            //{
+            //    course.Lessons[i].Finished = courseProfile.Lessons[i].Finished;
+            //}
             //string fullPathIconCourse = Path.Combine(folder.FullName, course.PathIcon);
             string fullPathIconCourse = course.PathIcon;
             GameObject objCard = null;
-            if (CurrentProfile.Profile.Courses.Exists(x => x.Course.Title.Contains(course.Title)))
+            if (CurrentProfile.Profile.Courses.Exists(x => x.Title.Contains(course.Title)))
             {
-                var myCourse = CurrentProfile.Profile.Courses.Find(x => x.Course.Title.Contains(course.Title));
-                /* Если курс уже прошли */
+                var myCourse = CurrentProfile.Profile.Courses.Find(x => x.Title.Contains(course.Title));
+                for (int i = 0; i < course.Lessons.Count; i++)
+                {
+                    course.Lessons[i].Finished = myCourse.Lessons[i].Finished;
+                }
+                /* Р•СЃР»Рё РєСѓСЂСЃ СѓР¶Рµ РїСЂРѕС€Р»Рё */
                 if (myCourse.Finished)
                 {
                     objCard = Instantiate(cardComplite);
                     var infoCourse = objCard.transform.GetChild(1);
                     infoCourse.GetChild(0).GetComponentInChildren<Text>().text = course.Title;
-                    infoCourse.GetChild(1).GetComponentInChildren<Text>().text = course.Lessons.Count.ToString() + " уроков";
+                    infoCourse.GetChild(1).GetComponentInChildren<Text>().text = course.Lessons.Count.ToString() + " СѓСЂРѕРєРѕРІ";
                 }
-                /* Если курс уже начали */
+                /* Р•СЃР»Рё РєСѓСЂСЃ СѓР¶Рµ РЅР°С‡Р°Р»Рё */
                 else
                 {
                     objCard = Instantiate(cardStart);
                     var infoCourse = objCard.transform.GetChild(1);
                     infoCourse.GetChild(0).GetComponentInChildren<Text>().text = course.Title;
-                    infoCourse.GetChild(1).GetChild(0).GetComponentInChildren<Text>().text = course.Lessons.Count.ToString() + " уроков";
-                    infoCourse.GetChild(1).GetChild(1).GetComponentInChildren<Text>().text = myCourse.Course.Lessons.FindAll(x => x.Finished).Count.ToString() + " уроков";
+                    infoCourse.GetChild(1).GetChild(0).GetComponentInChildren<Text>().text = course.Lessons.Count.ToString() + " СѓСЂРѕРєРѕРІ";
+                    infoCourse.GetChild(1).GetChild(1).GetComponentInChildren<Text>().text = myCourse.Lessons.FindAll(x => x.Finished).Count.ToString() + " СѓСЂРѕРєРѕРІ";
                 }
             }
-            /* Если не было ещё такого курса */
+            /* Р•СЃР»Рё РЅРµ Р±С‹Р»Рѕ РµС‰С‘ С‚Р°РєРѕРіРѕ РєСѓСЂСЃР° */
             else
             {
                 objCard = Instantiate(cardNotStart);
                 var infoCourse = objCard.transform.GetChild(1);
                 infoCourse.GetChild(0).GetComponentInChildren<Text>().text = course.Title;
-                infoCourse.GetChild(1).GetComponentInChildren<Text>().text = course.Lessons.Count.ToString() + " уроков";
+                infoCourse.GetChild(1).GetComponentInChildren<Text>().text = course.Lessons.Count.ToString() + " СѓСЂРѕРєРѕРІ";
                 objCard.transform.GetChild(2).GetComponentInChildren<Button>().onClick.AddListener(() => objectProfiles.AddCourse(course));
             }
             StartCoroutine(LoadTextureFromServer(fullPathIconCourse, objCard, course));
 
             objCard.GetComponent<Button>().onClick.AddListener(() =>
             {
-                CurrentProfile.CurrentCourse = new ProfileCourse(course);
+                CurrentProfile.CurrentCourse = course;
                 SceneManager.LoadScene("CourseDescription");
             });
             objCard.transform.GetChild(2).GetComponentInChildren<Button>().onClick.AddListener(() =>
             {
-                CurrentProfile.CurrentCourse = new ProfileCourse(course);
+                CurrentProfile.CurrentCourse = course;
                 SceneManager.LoadScene("Course");
             });
             objCard.transform.SetParent(content.transform, false);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static Unity.VisualScripting.Member;
 
 public class CourseDescriptionScene : MonoBehaviour
 {
@@ -23,33 +24,35 @@ public class CourseDescriptionScene : MonoBehaviour
         icon.GetComponentInChildren<Image>().sprite = CurrentProfile.Profile.Icon;
         icon.GetComponentInChildren<Text>().text = CurrentProfile.Profile.Name;
 
-        titleCourse.text = CurrentProfile.CurrentCourse.Course.Title;
-        descriptionCourse.text = CurrentProfile.CurrentCourse.Course.Description;
-        iconCourse.sprite = CurrentProfile.CurrentCourse.Course.Icon;
-
-        for (int i = 0; i < CurrentProfile.CurrentCourse.Course.Lessons.Count; i++)
+        titleCourse.text = CurrentProfile.CurrentCourse.Title;
+        descriptionCourse.text = CurrentProfile.CurrentCourse.Description;
+        if (CurrentProfile.CurrentCourse.Icon != null)
         {
-            Lesson lesson = CurrentProfile.CurrentCourse.Course.Lessons[i];
+            iconCourse.sprite = CurrentProfile.CurrentCourse.Icon;
+        }
+
+        for (int i = 0; i < CurrentProfile.CurrentCourse.Lessons.Count; i++)
+        {
+            Lesson lesson = CurrentProfile.CurrentCourse.Lessons[i];
             var objLesson = Instantiate(prefabLesson);
-            objLesson.GetComponentInChildren<Text>().text = string.Format("Урок {0}. {1}", i + 1, lesson.Title);
+            objLesson.GetComponentInChildren<Text>().text = string.Format("РЈСЂРѕРє {0}. {1}", i + 1, lesson.Title);
             objLesson.transform.SetParent(content.transform, false);
         }
 
-        if (CurrentProfile.Profile.Courses.Exists(x => x.Course.Title.Contains(CurrentProfile.CurrentCourse.Course.Title)))
+        if (CurrentProfile.Profile.Courses.Exists(x => x.Title.Contains(CurrentProfile.CurrentCourse.Title)))
         {
-            var course = CurrentProfile.Profile.Courses.Find(x => x.Course.Title.Contains(CurrentProfile.CurrentCourse.Course.Title));
+            var course = CurrentProfile.Profile.Courses.Find(x => x.Title.Contains(CurrentProfile.CurrentCourse.Title));
             if (course.Finished)
-                textButton.text = "Просмотреть курс";
+                textButton.text = "РџСЂРѕСЃРјРѕС‚СЂРµС‚СЊ РєСѓСЂСЃ";
             else
-                textButton.text = "Продолжить курс";
+                textButton.text = "РџСЂРѕРґРѕР»Р¶РёС‚СЊ РєСѓСЂСЃ";
         }
         else
         {
-            textButton.text = "Начать курс";
-            Debug.Log(CurrentProfile.CurrentCourse.LastLesson);
-            Debug.Log(CurrentProfile.CurrentCourse);
+            textButton.text = "РќР°С‡Р°С‚СЊ РєСѓСЂСЃ";
             button.GetComponentInChildren<Button>().onClick.AddListener(() => objectProfiles.AddCourse(CurrentProfile.CurrentCourse));
         }
         button.GetComponentInChildren<Button>().onClick.AddListener(() => SceneManager.LoadScene("Course"));
+
     }
 }

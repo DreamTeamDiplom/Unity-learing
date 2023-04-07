@@ -10,6 +10,7 @@ using UnityEngine.UI;
 public class ExtendedInputField : InputField
 {
     private Image extendedImage;
+    private int qwe;
     public enum StateInput
     {
         Error,
@@ -36,13 +37,18 @@ public class ExtendedInputField : InputField
         set => m_StateInput = value;
     }
 
+    protected override void Awake()
+    {
+        base.Awake();
+        extendedImage = GetComponent<Image>();
+    }
+
     protected override void OnEnable()
     {
         base.OnEnable();
         transition = Transition.SpriteSwap;
         if (Application.isPlaying)
         {
-            extendedImage = GetComponent<Image>();
             OnChangeTheme();
             Theme.Instance.OnChangeImage += OnChangeTheme;
         }
@@ -77,8 +83,8 @@ public class ExtendedInputField : InputField
         {
             return null;
         }
-        /* Не совсем правильное название, но пока так */
-        Sprite mewSprite = Resources.Load<Sprite>(Path.Combine(Theme.Instance.nameTheme, "Input", m_StateInput.ToString(), sprite.name));
+        /* пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ */
+        Sprite mewSprite = Resources.Load<Sprite>(Path.Combine(Theme.Instance.NameTheme, "Input", m_StateInput.ToString(), sprite.name));
         if (mewSprite == null)
             throw new ArgumentException(gameObject.name);
         return mewSprite;
@@ -86,6 +92,7 @@ public class ExtendedInputField : InputField
 
     protected override void OnDisable()
     {
+        base.OnDisable();
         if (Application.isPlaying)
         {
             Theme.Instance.OnChangeImage -= OnChangeTheme;

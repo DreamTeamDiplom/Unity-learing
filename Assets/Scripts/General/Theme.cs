@@ -16,7 +16,7 @@ public interface ITheme
 public class Theme : ITheme
 {
     private static Theme _instance;
-    public string nameTheme = "White";
+    public string NameTheme = "White";
     public static Theme Instance
     {
         get
@@ -33,7 +33,7 @@ public class Theme : ITheme
         if (!PlayerPrefs.HasKey("Theme"))
         {
             PlayerPrefs.SetString("Theme", "Black");
-            nameTheme = "Black";
+            NameTheme = "Black";
         }
         ChangeTheme();
     }

@@ -27,7 +27,7 @@ public class ExtendedText : Text
     {
         if (m_Material != null)
         {
-            Material material = Resources.Load<Material>(Path.Combine(Theme.Instance.nameTheme, m_Material.name));
+            Material material = Resources.Load<Material>(Path.Combine(Theme.Instance.NameTheme, m_Material.name));
             if (material == null)
                 throw new ArgumentException(gameObject.name);
             this.material = material;

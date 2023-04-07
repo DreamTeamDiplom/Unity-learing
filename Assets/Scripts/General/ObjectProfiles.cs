@@ -1,7 +1,9 @@
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
@@ -14,7 +16,7 @@ public class ObjectProfiles : ScriptableObject
     public List<Profile> Profiles => _profiles;
 
     /// <summary>
-    /// Загрузка данных
+    /// Р—Р°РіСЂСѓР·РєР° РґР°РЅРЅС‹С…
     /// </summary>
     public void LoadData()
     {
@@ -22,9 +24,16 @@ public class ObjectProfiles : ScriptableObject
         if (File.Exists(_pathSaveData))
             using (FileStream file = File.Open(_pathSaveData, FileMode.Open))
             {
-                BinaryFormatter bf = new BinaryFormatter();
-                _profiles = (List<Profile>)bf.Deserialize(file);
-                file.Close();
+                try
+                {
+                    BinaryFormatter bf = new BinaryFormatter();
+                    _profiles = (List<Profile>)bf.Deserialize(file);
+                }
+                catch (Exception) 
+                {
+                    file.Close();
+                    File.Delete(_pathSaveData);
+                }
             }
         else
         {
@@ -32,7 +41,7 @@ public class ObjectProfiles : ScriptableObject
         }
     }
     /// <summary>
-    /// Добавляем профиль
+    /// Р”РѕР±Р°РІР»СЏРµРј РїСЂРѕС„РёР»СЊ
     /// </summary>
     /// <param name="profile"></param>
     public void AddProfile(Profile profile)
@@ -41,7 +50,7 @@ public class ObjectProfiles : ScriptableObject
         SaveData();
     }
     /// <summary>
-    /// Сохранение данных
+    /// РЎРѕС…СЂР°РЅРµРЅРёРµ РґР°РЅРЅС‹С…
     /// </summary>
     public void SaveData()
     {
@@ -53,24 +62,24 @@ public class ObjectProfiles : ScriptableObject
         }
     }
     /// <summary>
-    /// Добавление курса пользователю
+    /// Р”РѕР±Р°РІР»РµРЅРёРµ РєСѓСЂСЃР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЋ
     /// </summary>
-    /// <param name="course">Курс</param>
+    /// <param name="course">РљСѓСЂСЃ</param>
     public void AddCourse(Course course)
     {
         AddCourse(new ProfileCourse(course));
     }
 
     /// <summary>
-    /// Добавление курса пользователю
+    /// Р”РѕР±Р°РІР»РµРЅРёРµ РєСѓСЂСЃР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЋ
     /// </summary>
-    /// <param name="course">Курс</param>
+    /// <param name="course">РљСѓСЂСЃ</param>
     public void AddCourse(ProfileCourse course)
     {
         var profile = _profiles.Find(x => x.PathFolder == CurrentProfile.Profile.PathFolder);
         profile.Courses.Add(course);
-        var fromDir = Path.Combine(Application.streamingAssetsPath, "Courses", course.Course.Title);
-        var toDir = Path.Combine(CurrentProfile.Profile.PathFolder, course.Course.Title);
+        var fromDir = Path.Combine(Application.streamingAssetsPath, "Courses", course.Title);
+        var toDir = Path.Combine(CurrentProfile.Profile.PathFolder, course.Title);
         CopyDir(fromDir, toDir);
         SaveData();
     }
@@ -78,7 +87,7 @@ public class ObjectProfiles : ScriptableObject
     private void CopyDir(string fromDir, string toDir)
     {
         Directory.CreateDirectory(toDir);
-        foreach (string s1 in Directory.GetFiles(fromDir).Where(f => f.IndexOf(".meta") == -1))
+        foreach (string s1 in Directory.GetFiles(fromDir).Where(f => f.IndexOf("lessons") != -1))
         {
             string s2 = Path.Combine(toDir, Path.GetFileName(s1));
             File.Copy(s1, s2);
@@ -90,7 +99,7 @@ public class ObjectProfiles : ScriptableObject
     }
 
     /// <summary>
-    /// Удаление пользователя
+    /// РЈРґР°Р»РµРЅРёРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
     /// </summary>
     /// <param name="profile"></param>
     public void DeleteProfile(Profile profile)

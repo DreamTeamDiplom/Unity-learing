@@ -12,7 +12,8 @@ public class Profile
     private string email;
     private string pathIcon;
     private string path;
-    private ThemeEnum theme = ThemeEnum.Black;
+    private Setting setting;
+    //private ThemeEnum theme = ThemeEnum.Black;
     private List<ProfileCourse> courses;
 
     [NonSerialized] private Sprite icon;
@@ -70,10 +71,10 @@ public class Profile
         set => icon = value;
     }
 
-    public ThemeEnum Theme
+    public Setting Setting
     {
-        get => theme;
-        set => theme = value;
+        get => setting;
+        //set => setting = value;
     }
 
     /// <summary>
@@ -89,11 +90,17 @@ public class Profile
         this.pathIcon = pathIcon;
         this.name = name;
 
-        var hash = new Hash128();
-        hash.Append(password);
-        this.password = hash.ToString();
+        this.password = HashData(password);
         this.email = email;
         this.path = Path.Combine(path, name);
+        setting = new Setting();
         courses = new List<ProfileCourse>();
+    }
+
+    public string HashData(string text)
+    {
+        var hash = new Hash128();
+        hash.Append(text);
+        return hash.ToString();
     }
 }

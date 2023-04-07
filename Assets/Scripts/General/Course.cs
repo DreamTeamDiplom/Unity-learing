@@ -1,10 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Networking;
 
 [Serializable]
 public class Course
@@ -44,9 +43,18 @@ public class Course
         set => icon = value;
     }
 
+    public Lesson LastLesson
+    {
+        get => lessons.Where(l => !l.Finished).FirstOrDefault();
+    }
+    public bool Finished
+    {
+        get => LastLesson.IsUnityNull();
+    }
+
     public override string ToString()
     {
-        return string.Format("{0}, {1}", title, description);
+        return string.Format("{0}, {1}", title);
     }
 }
 
@@ -75,6 +83,7 @@ public class Lesson
     public bool Finished
     {
         get => finished;
+        set => finished = value;
     }
     public override string ToString()
     {

@@ -46,8 +46,8 @@ public class ExtendedButtonState : Button
         {
             return null;
         }
-        /* Не совсем правильное название, но пока так */
-        Sprite mewSprite = Resources.Load<Sprite>(Path.Combine(Theme.Instance.nameTheme, "Button", sprite.name));
+        /* пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ */
+        Sprite mewSprite = Resources.Load<Sprite>(Path.Combine(Theme.Instance.NameTheme, "Button", sprite.name));
         if (mewSprite == null)
             throw new ArgumentException(gameObject.name);
         return mewSprite;

@@ -7,7 +7,7 @@ public class UGUI : MonoBehaviour
 {
 	public Image dotweenLogo, circleOutline;
 	public Text text, relativeText, scrambledText;
-	public Slider slider;
+	public UnityEngine.UI.Slider slider;
 
 	void Start()
 	{
