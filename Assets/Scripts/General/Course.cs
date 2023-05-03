@@ -17,30 +17,29 @@ public class Course
     public string Title
     {
         get => title;
-        //set => title = value;
     }
     public string Description
     {
         get => description;
-        //set => description = value;
     }
     public string PathIcon
     {
-        get
-        {
-            return Path.Combine(new string[] { Application.streamingAssetsPath, "Courses", title, pathIcon });
-        }
-        //set => pathIcon = value;
+        get => pathIcon;
     }
     public List<Lesson> Lessons
     {
         get => lessons;
-        //set => lessons = value;
     }
     public Sprite Icon
     {
         get => icon;
-        set => icon = value;
+        set
+        {
+            if (value != null)
+            {
+                icon = value;
+            }
+        }
     }
 
     public Lesson LastLesson
@@ -69,12 +68,10 @@ public class Lesson
     public string Title
     {
         get => title;
-        //set => title = value;
     }
     public string[] Description
     {
         get => description;
-        //set => description = value;
     }
     public string VideoUrl
     {
