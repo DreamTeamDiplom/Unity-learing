@@ -8,20 +8,21 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using System.Diagnostics;
 using System.IO.MemoryMappedFiles;
-
-[Serializable]
-internal class PrefabsLesson
-{
-    public GameObject prefabCardFirst;
-    public GameObject prefabCard;
-    public GameObject prefabCardLast;
-    public GameObject prefabCardCompleteFirst;
-    public GameObject prefabCardComplete;
-    public GameObject prefabCardCompleteLast;
-}
+using System.Reflection;
 
 public class CourseScene : MonoBehaviour
 {
+    [Serializable]
+    private class PrefabsLesson
+    {
+        public GameObject prefabCardFirst;
+        public GameObject prefabCard;
+        public GameObject prefabCardLast;
+        public GameObject prefabCardCompleteFirst;
+        public GameObject prefabCardComplete;
+        public GameObject prefabCardCompleteLast;
+    }
+
     [Header("Header")]
     [SerializeField] private Text titleCourse;
     [SerializeField] private GameObject icon;
@@ -52,7 +53,7 @@ public class CourseScene : MonoBehaviour
         icon.GetComponentInChildren<Image>().sprite = CurrentProfile.Profile.Icon;
         icon.GetComponentInChildren<Text>().text = CurrentProfile.Profile.Name;
 
-        lessonsSprites = AssetBundle.LoadFromFile(Path.Combine(CurrentProfile.Profile.PathFolder, CurrentProfile.CurrentCourse.Title, "lessons"));
+        lessonsSprites = GetAssetBundleLessons();
 
         titleCourse.text = CurrentProfile.CurrentCourse.Title;
         var lessonFirstUnfinish = CurrentProfile.CurrentCourse.LastLesson;
@@ -60,50 +61,21 @@ public class CourseScene : MonoBehaviour
         for (int i = 0; i < CurrentProfile.CurrentCourse.Lessons.Count; i++)
         {
             Lesson lesson = CurrentProfile.CurrentCourse.Lessons[i];
-            GameObject lessonObj = null;
-            if (!lesson.Finished)
-            {
-                if (i == 0)
-                {
-                    lessonObj = Instantiate(lessons.prefabCardFirst);
-                }
-                else if (i == CurrentProfile.CurrentCourse.Lessons.Count - 1)
-                {
-                    lessonObj = Instantiate(lessons.prefabCardLast);
-                }
-                else
-                {
-                    lessonObj = Instantiate(lessons.prefabCard);
-                }
-            }
-            else
-            {
-                if (i == 0)
-                {
-                    lessonObj = Instantiate(lessons.prefabCardCompleteFirst);
-                }
-                else if (i == CurrentProfile.CurrentCourse.Lessons.Count - 1)
-                {
-                    lessonObj = Instantiate(lessons.prefabCardCompleteLast);
-                }
-                else
-                {
-                    lessonObj = Instantiate(lessons.prefabCardComplete);
-                }
-            }
-            var textInfo = lessonObj.transform.GetChild(1);
-            textInfo.GetChild(0).GetComponent<Text>().text = string.Format("Урок {0}.", i + 1);
-            textInfo.GetChild(1).GetComponent<Text>().text = lesson.Title;
-            lessonObj.GetComponentInChildren<Button>().onClick.AddListener(
-                () => { 
-                    SelectCourse(lesson); 
-                    lessonObj.GetComponentInChildren<Button>().interactable = false; 
-                });
-            lessonObj.transform.SetParent(contentLessons.transform, false);
+            GameObject gameObjectLesson = GetGameObjectLesson(lesson, i);
+            gameObjectLesson.GetComponent<ViewLesson>().Init(i + 1, lesson.Title);
+
+            gameObjectLesson.GetComponentInChildren<Button>().onClick.AddListener( () => 
+            { 
+                SelectCourse(lesson); 
+                gameObjectLesson.GetComponentInChildren<Button>().interactable = false; 
+            });
+
+            gameObjectLesson.transform.SetParent(contentLessons.transform, false);
 
             if (lesson == lessonFirstUnfinish)
             {
-                TryWriteFileToMemory(i.ToString());
+                string message = string.Format("{0}\n{1}", i, CurrentProfile.Profile.PathFolder);
+                TryWriteFileToMemory(message);
             }
         }
 
@@ -121,6 +93,62 @@ public class CourseScene : MonoBehaviour
             SelectCourse(lessonFirstUnfinish);
         }
 
+    }
+
+    private GameObject GetGameObjectLesson(Lesson lesson, int index)
+    {
+        if (index == 0)
+        {
+            return !lesson.Finished ? Instantiate(lessons.prefabCardFirst) : Instantiate(lessons.prefabCardCompleteFirst);
+        }
+        else if (index == CurrentProfile.CurrentCourse.Lessons.Count - 1)
+        {
+            return !lesson.Finished ? Instantiate(lessons.prefabCardLast) : Instantiate(lessons.prefabCardCompleteLast);
+        }
+        else
+        {
+            return !lesson.Finished ? Instantiate(lessons.prefabCard) : Instantiate(lessons.prefabCardComplete);
+
+        }
+    }
+
+    private AssetBundle GetAssetBundleLessons()
+    {
+        DirectoryInfo dirInfo = new DirectoryInfo(Path.Combine(Application.streamingAssetsPath, "Courses"));
+
+        FileInfo fileInfo = dirInfo.GetFiles().Where(f => !f.Name.EndsWith(".meta") &&
+            f.Name.Contains(CurrentProfile.CurrentCourse.Title, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+
+        if (fileInfo == null)
+        {
+            /* Обработка незагруженного курса */
+            return null;
+        }
+
+        AssetBundle loadedAssetBundle = AssetBundle.LoadFromFile(fileInfo.FullName);
+        var assetBundleLesson = loadedAssetBundle.LoadAsset<TextAsset>("lessons");
+        string assetBundlePath = Path.Combine(Application.temporaryCachePath, "lesson");
+        File.WriteAllBytes(assetBundlePath, assetBundleLesson.bytes);
+
+        loadedAssetBundle.Unload(false);
+
+        return AssetBundle.LoadFromFile(assetBundlePath);
+    }
+
+    private string GetDescription(Lesson lesson)
+    {
+        if (lesson.Description.Length < 1)
+        {
+            return "Нет описания!";
+        }
+        else if (lesson.Description.Length == 1)
+        {
+            return lesson.Description[0];
+        }
+        else
+        {
+            return lesson.Description.Aggregate((x, y) => x + "\n" + y);
+        }
     }
 
     private void SelectCourse(Lesson lesson)
@@ -154,7 +182,6 @@ public class CourseScene : MonoBehaviour
             {
                 if (lesson == CurrentProfile.CurrentCourse.Lessons[i])
                 {
-                    contentLessons.transform.GetChild(i).GetComponent<Button>().interactable = false;
                     var spriteAsset = lessonsSprites.LoadAsset<TMP_SpriteAsset>("lesson" + (i + 1));
                     descriptionLesson.spriteAsset = spriteAsset;
                     break;
@@ -163,19 +190,8 @@ public class CourseScene : MonoBehaviour
             
         }
 
-        if (lesson.Description.Length < 1)
-        {
-            descriptionLesson.text = "Нет описания!";
-        }
-        else if (lesson.Description.Length == 1)
-        {
-            descriptionLesson.text = lesson.Description[0];
-        }
-        else
-        {
-            descriptionLesson.text = lesson.Description.Aggregate((x, y) => x + "\n" + y);
+        descriptionLesson.text = GetDescription(lesson);
 
-        }
         LayoutRebuilder.MarkLayoutForRebuild((RectTransform)objVideoPlayer.transform.parent);
 
         Canvas.ForceUpdateCanvases();
@@ -192,8 +208,20 @@ public class CourseScene : MonoBehaviour
         {
             if (TryReadFileToMemory(out string message))
             {
-                if (int.TryParse(message, out int index))
+                string[] messages = message.Split("\n");
+
+                if (messages[1] != CurrentProfile.Profile.PathFolder)
                 {
+                    return;
+                }
+
+                if (int.TryParse(messages[0], out int index))
+                {
+
+                    if (index < 0 || CurrentProfile.CurrentCourse.Lessons.Count <= index)
+                    {
+                        return;
+                    }
                     CurrentProfile.CurrentCourse.Lessons[index].Finished = true;
 
                     var course = CurrentProfile.Profile.Courses.FirstOrDefault(c => c.Title == CurrentProfile.CurrentCourse.Title);
@@ -202,11 +230,12 @@ public class CourseScene : MonoBehaviour
                         course.Lessons[index].Finished = true;
                     }
                     _dataProfiles.SaveData();
-                    //lessonsSprites.Unload(false);
                     if (CurrentProfile.CurrentCourse.Finished)
                     {
                         windowsActive = true;
                     }
+                    sharedMemory = null;
+                    //TryWriteFileToMemory("test", "");
                     SceneManager.LoadScene("Course");
                 }
             }
@@ -247,7 +276,7 @@ public class CourseScene : MonoBehaviour
     {
         try
         {
-            char[] message = text.ToString().ToCharArray();
+            char[] message = text.ToCharArray();
             int size = message.Length;
             sharedMemory = MemoryMappedFile.CreateOrOpen("lesson", size * 2 + 4);
 
@@ -266,11 +295,14 @@ public class CourseScene : MonoBehaviour
 
     private void OnDestroy()
     {
-        lessonsSprites.Unload(false);
+        if (lessonsSprites != null)
+        {
+            lessonsSprites.Unload(false);
+        }
     }
     public void ChangeScene()
     {
-        SceneManager.LoadScene("AllCources");
+        SceneManager.LoadScene("AllCourses");
     }
 
     public void DoToStart()
@@ -278,9 +310,9 @@ public class CourseScene : MonoBehaviour
         var unityProcess = Process.GetProcessesByName("unity").FirstOrDefault();
         if (unityProcess == null)
         {
+            /* Возможно на других ОС неправильно работает */
             Process.Start(@"C:\Program Files\Unity Hub\Unity Hub.exe");
         }
-        Application.OpenURL("Unity Hub.exe");
     }
 }
 
