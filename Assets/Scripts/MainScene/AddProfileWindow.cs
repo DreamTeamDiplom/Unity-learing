@@ -12,7 +12,9 @@ using System.Text.RegularExpressions;
 
 public class AddProfileWindow : ModalWindow
 {
-    [Header("GameObjects with error")]
+    private const string PATTERN = @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z";
+
+    [Header("GameObjects With Error")]
     [SerializeField] private GameObject _inputName;
     [SerializeField] private GameObject _inputEmail;
     [SerializeField] private GameObject _iconGameObject;
@@ -37,11 +39,13 @@ public class AddProfileWindow : ModalWindow
         base.Awake();
         _inputFieldName = _inputName.GetComponentInChildren<InputField>();
         _inputFiledEmail = _inputEmail.GetComponentInChildren<InputField>();
-
+#if UNITY_EDITOR
+        _inputFiledEmail.text = "qwe@asd.zxc";
+#endif
         _inputFieldPassword = _inputPassword.GetComponentInChildren<InputField>();
         _inputFieldPath = _inputPath.GetComponentInChildren<InputField>();
-
-        _inputFieldPath.text = Application.streamingAssetsPath;
+        DirectoryInfo directoryInfo = new DirectoryInfo(Application.streamingAssetsPath);
+        _inputFieldPath.text = directoryInfo.FullName;
     }
     private IEnumerator LoadTexture(string[] url, Action<Sprite> action)
     {
@@ -66,9 +70,18 @@ public class AddProfileWindow : ModalWindow
         _iconGameObject.transform.GetChild(2).GetComponent<Image>().sprite = icons.Last();
     }
 
-    /// <summary>
-    /// �������� ������������
-    /// </summary>
+    private string GetPathDirectory(Profile profile)
+    {
+        int number = 2;
+        string pathDirectory = profile.PathFolder + $" ({number})";
+        while (Directory.Exists(pathDirectory))
+        {
+            number++;
+            pathDirectory = string.Format("{0} ({1})", profile.PathFolder, number);
+        }
+        return pathDirectory;
+    }
+
     public void AddProfile()
     {
         bool error = false;
@@ -76,46 +89,38 @@ public class AddProfileWindow : ModalWindow
 
         error |= _inputName.GetComponent<CheckingError>().CheckingInput(_inputFieldName.text != "");
 
-        bool isEmail = Regex.IsMatch(_inputFiledEmail.text, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase);
+        bool isEmail = Regex.IsMatch(_inputFiledEmail.text, PATTERN, RegexOptions.IgnoreCase);
         error |= _inputEmail.GetComponent<CheckingError>().CheckingInput(isEmail);
 
         if (!error)
         {
             Profile newProfile = new Profile(icons[_index].name, _inputFieldName.text, _inputFieldPassword.text, _inputFiledEmail.text, _inputFieldPath.text);
-            _objectProfiles.AddProfile(newProfile);
-
-            CurrentProfile.Profile = newProfile;
-            CurrentProfile.Profile.Icon = icons[_index];
+            newProfile.Setting.Theme = Theme.Instance.ThemeType;
             PlayerPrefs.SetInt("Animation", 1);
-            if (Directory.Exists(CurrentProfile.Profile.PathFolder))
+            if (Directory.Exists(newProfile.PathFolder))
             {
-                int number = 2;
-                while (Directory.Exists(CurrentProfile.Profile.PathFolder + $" ({number})"))
-                    number++;
-                Directory.CreateDirectory(CurrentProfile.Profile.PathFolder + $" ({number})");
-                CurrentProfile.Profile.PathFolder = CurrentProfile.Profile.PathFolder + $" ({number})";
+                string pathDirectory = GetPathDirectory(newProfile);
+                Directory.CreateDirectory(pathDirectory);
+                newProfile.PathFolder = pathDirectory;
             }
             else
             {
-                Directory.CreateDirectory(CurrentProfile.Profile.PathFolder);
+                Directory.CreateDirectory(newProfile.PathFolder);
             }
+            _objectProfiles.AddProfile(newProfile);
+            CurrentProfile.Profile = newProfile;
+            CurrentProfile.Profile.Icon = icons[_index];
             SceneManager.LoadScene("AllCourses");
         }
     }
 
-    /// <summary>
-    /// ������� ��� ���������� ���� ��� ���������� ��������
-    /// </summary>
     public void AddPath()
     {
-        var path = StandaloneFileBrowser.OpenFolderPanel("�������� ���� ��� �������� ����� ��������", _inputFieldPath.text, false);
+        var path = StandaloneFileBrowser.OpenFolderPanel("Директория для проекта", _inputFieldPath.text, false);
+        //var path = StandaloneFileBrowser.OpenFolderPanel("�������� ���� ��� �������� ����� ��������", _inputFieldPath.text, false);
         _inputFieldPath.text = path.Length != 0 ? path[0] : _inputFieldPath.text;
     }
 
-
-    /// <summary>
-    /// ������� ��� ���������� ���� ������ ������������
-    /// </summary>
     public void AddPathIcon()
     {
         if (_index < icons.Length - 1)
@@ -124,7 +129,8 @@ public class AddProfileWindow : ModalWindow
             new ExtensionFilter("Image Files", "png", "jpg", "jpeg" ),
             new ExtensionFilter("All Files", "*" ),
         };
-        var pathIcon = StandaloneFileBrowser.OpenFilePanel("�������� ������ ��� �������", "", extensions, false);
+        var pathIcon = StandaloneFileBrowser.OpenFilePanel("Файл для иконки профиля", "", extensions, false);
+        //var pathIcon = StandaloneFileBrowser.OpenFilePanel("�������� ������ ��� �������", "", extensions, false);
         StartCoroutine(LoadTexture(pathIcon, LoadTexture));
     }
 

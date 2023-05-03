@@ -89,7 +89,6 @@ public class MyProfile : MonoBehaviour
         objectProfiles.SaveData();
     }
 
-    /* ���������� */
     private void PathProfile()
     {
         var settings = textPath.GetGenerationSettings(Vector2.zero);
@@ -153,7 +152,7 @@ public class MyProfile : MonoBehaviour
         objectProfiles.SaveData();
         if (CurrentProfile.Profile.Courses.Count == 0)
         {
-            SceneManager.LoadScene("All�ourses");
+            SceneManager.LoadScene("AllCourses");
         }
         else
         {
@@ -184,7 +183,7 @@ public class MyProfile : MonoBehaviour
             Theme.Instance.Change();
             if (CurrentProfile.Profile.Courses.Count == 0)
             {
-                SceneManager.LoadScene("All�ourses");
+                SceneManager.LoadScene("AllCourses");
             }
             else
             {

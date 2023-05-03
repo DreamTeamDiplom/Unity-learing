@@ -10,7 +10,6 @@ using UnityEngine.UI;
 public class ExtendedInputField : InputField
 {
     private Image extendedImage;
-    private int qwe;
     public enum StateInput
     {
         Error,
@@ -60,8 +59,8 @@ public class ExtendedInputField : InputField
         base.Reset();
         transition = Transition.SpriteSwap;
         var spriteState = new SpriteState();
-        spriteState.highlightedSprite = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Resources/White/Input/Normal/Highlighted.png");
-        spriteState.selectedSprite = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Resources/White/Input/Normal/Selected.png");
+        spriteState.highlightedSprite = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(Path.Combine("Assets", "Resources", "White", "Input", "Normal", "Highlighted.png"));
+        spriteState.selectedSprite = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(Path.Combine("Assets", "Resources", "White", "Input", "Normal", "Selected.png"));
         this.spriteState = spriteState;
         selectionColor = new Color(0, 0, 0, .5f);
     }
@@ -69,6 +68,10 @@ public class ExtendedInputField : InputField
 
     public void OnChangeTheme()
     {
+        if (extendedImage == null)
+        {
+            return;
+        }
         extendedImage.sprite = LoadSprite(extendedImage.sprite);
         var spriteState = new SpriteState();
         spriteState.highlightedSprite = LoadSprite(this.spriteState.highlightedSprite);

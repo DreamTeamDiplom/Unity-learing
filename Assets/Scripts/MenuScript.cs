@@ -14,9 +14,6 @@ public class MenuScript : MonoBehaviour
     [SerializeField] private GameObject _exitProfile;
     [SerializeField] private GameObject _exit;
 
-    //[Header("Text")]
-    //[SerializeField] GameObject _message;
-
     [Header("Windows")]
     [SerializeField] GameObject _menuWindow;
 
@@ -25,11 +22,10 @@ public class MenuScript : MonoBehaviour
     private Button _myCoursesButton;
     private Button _settingButton;
     private Button _exitProfileButton;
-    //Button _exitButton;
 
     private RectTransform _menuTransform;
 
-    private bool _animation;
+    public bool IsAnimation;
     private void Awake()
     {
         var objs = GameObject.FindGameObjectsWithTag("Menu");
@@ -41,7 +37,7 @@ public class MenuScript : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         
-        _animation = GetAnimation();
+        IsAnimation = GetAnimation();
 
         _myProfileButton = _myProfile.GetComponentInChildren<Button>();
         _myProfileButton.onClick.AddListener(() => {
@@ -98,7 +94,6 @@ public class MenuScript : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        _animation = GetAnimation();
         foreach (var gameObject in new GameObject[] { _myProfile, _allCourses, _myCourses, _setting, _exitProfile })
         {
             gameObject?.SetActive(!(scene.name == "MainScene"));
@@ -117,22 +112,15 @@ public class MenuScript : MonoBehaviour
 
     public void OnPointerEnter(GameObject gameObject)
     {
-        if (_animation)
+        if (IsAnimation)
         {
             gameObject.transform.DOLocalMoveX(40, .5f);
-            gameObject.GetComponentInParent<Button>().transition = Selectable.Transition.None;
         }
-        else
-        {
-            gameObject.GetComponentInParent<Button>().transition = Selectable.Transition.ColorTint;
-        }
-
-
     }
 
     public void OnPointerExit(GameObject gameObject)
     {
-        if (_animation)
+        if (IsAnimation)
         {
             gameObject.transform.DOLocalMoveX(0, .5f); 
         }
@@ -145,14 +133,6 @@ public class MenuScript : MonoBehaviour
 
     private bool GetAnimation()
     {
-        if (PlayerPrefs.HasKey("Animation"))
-        {
-            return PlayerPrefs.GetInt("Animation") == 1;
-        }
-        else
-        {
-            return true;
-        }
+        return PlayerPrefs.GetInt("Animation", 1) == 1;
     }
-
 }

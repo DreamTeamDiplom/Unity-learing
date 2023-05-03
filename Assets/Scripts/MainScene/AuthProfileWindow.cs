@@ -1,5 +1,5 @@
-using DG.Tweening;
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,10 +7,12 @@ using UnityEngine.UI;
 
 public class AuthProfileWindow : ModalWindow
 {
-    [SerializeField] private GameObject _inputPassword;
-    [SerializeField] private TextMeshProUGUI _forgotPassword;
     [Header("Windows")]
     [SerializeField] private GameObject _changePasswordWindow;
+
+    [Space(10f)]
+    [SerializeField] private GameObject _inputPassword;
+    [SerializeField] private TextMeshProUGUI _forgotPassword;
 
     private InputField _inputFieldPassword;
     private CheckingError _checkingError;
@@ -31,9 +33,6 @@ public class AuthProfileWindow : ModalWindow
         _checkingError.CheckingInput(true);
     }
 
-    /// <summary>
-    /// ����������� ������������ � ���� "�����������"
-    /// </summary>
     public void AuthUser()
     {
         var hash = new Hash128();
@@ -59,25 +58,16 @@ public class AuthProfileWindow : ModalWindow
         }
     }
 
-    /// <summary>
-    /// ��� ��������� �� "������ ������"
-    /// </summary>
     public void OnPointerEnter()
     {
         _forgotPassword.fontStyle = FontStyles.Bold;
     }
 
-    /// <summary>
-    /// ��� �������� � "������ ������"
-    /// </summary>
     public void OnPointerExit()
     {
         _forgotPassword.fontStyle = FontStyles.Normal;
     }
 
-    /// <summary>
-    /// ������� ���� "������ ������"
-    /// </summary>
     public void OnActiveWindowForgotPassword()
     {
         _changePasswordWindow.SetActive(true);

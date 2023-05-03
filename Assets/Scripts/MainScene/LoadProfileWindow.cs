@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -13,7 +14,7 @@ public class LoadProfileWindow : MonoBehaviour
     [SerializeField] private GameObject _prefabProfile;
 
     [Header("Windows")]
-    [SerializeField] private GameObject _windowAddProfile;
+    //[SerializeField] private GameObject _windowAddProfile;
     [SerializeField] private GameObject _windowAuthProfile;
 
     [Space(10f)]
@@ -33,23 +34,23 @@ public class LoadProfileWindow : MonoBehaviour
 
         foreach (var profile in _dataProfiles.Profiles)
         {
-            var profileObj = Instantiate(_prefabProfile);
-            Sprite iconProfile = Resources.Load<Sprite>("Icons/" + profile.PathIcon);
-            if (iconProfile.IsUnityNull())
+            var gameObjectProfile = Instantiate(_prefabProfile);
+
+            Sprite iconProfile = Resources.Load<Sprite>(Path.Combine("Icons", profile.PathIcon));
+            if (iconProfile == null)
             {
-                StartCoroutine(LoadTexture(profileObj, profile));
+                StartCoroutine(LoadTexture(profile));
             }
             else
             {
                 profile.Icon = iconProfile;
-                SetSprite(profileObj, profile);
             }
-            profileObj.GetComponentInChildren<TextMeshProUGUI>().text = profile.Name;
-            profileObj.transform.SetParent(_content.transform, false);
+            gameObjectProfile.GetComponent<ViewProfile>().Init(profile, () => AuthProfile(profile));
+            gameObjectProfile.transform.SetParent(_content.transform, false);
         }
         StartCoroutine(ChangeSize());
     }
-    private IEnumerator LoadTexture(GameObject profileObj, Profile profile)
+    private IEnumerator LoadTexture(Profile profile)
     {
         var request = UnityWebRequestTexture.GetTexture(profile.PathIcon);
         yield return request.SendWebRequest();
@@ -57,13 +58,7 @@ public class LoadProfileWindow : MonoBehaviour
         var sprite = Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100.0f);
         sprite.name = profile.PathIcon;
         profile.Icon = sprite;
-        SetSprite(profileObj, profile);
         request.Dispose();
-    }
-    private void SetSprite(GameObject profileObj, Profile profile)
-    {
-        profileObj.transform.GetChild(0).GetComponent<Image>().sprite = profile.Icon;
-        profileObj.GetComponentInChildren<Button>().onClick.AddListener(() => AuthProfile(profile));
     }
 
     private void AuthProfile(Profile profile)
@@ -74,7 +69,7 @@ public class LoadProfileWindow : MonoBehaviour
 
     private IEnumerator ChangeSize()
     {
-        yield return new WaitForEndOfFrame();
+        yield return null;
 
         Canvas.ForceUpdateCanvases();
         float heigthContent = _content.GetComponent<RectTransform>().sizeDelta.y;

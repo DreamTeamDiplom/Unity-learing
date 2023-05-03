@@ -24,9 +24,9 @@ public class ExtendedButtonState : Button
         base.Reset();
         transition = Transition.SpriteSwap;
         var spriteState = new SpriteState();
-        spriteState.highlightedSprite = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Resources/White/Button/Highlighted.png");
-        spriteState.pressedSprite = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Resources/White/Button/Pressed.png");
-        spriteState.selectedSprite = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Resources/White/Button/Selected.png");
+        spriteState.highlightedSprite = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(Path.Combine("Assets", "Resources", "White", "Button", "Highlighted.png"));
+        spriteState.pressedSprite = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(Path.Combine("Assets", "Resources", "White", "Button", "Pressed.png"));
+        spriteState.selectedSprite = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(Path.Combine("Assets", "Resources", "White", "Button", "Selected.png"));
         this.spriteState = spriteState;
     }
 #endif
@@ -46,8 +46,7 @@ public class ExtendedButtonState : Button
         {
             return null;
         }
-        /* �� ������ ���������� ��������, �� ���� ��� */
-        Sprite mewSprite = Resources.Load<Sprite>(Path.Combine(Theme.Instance.NameTheme, "Button", sprite.name));
+        Sprite mewSprite = Resources.Load<Sprite>(Path.Combine(Theme.Instance.ThemeType.ToString(), "Button", sprite.name));
         if (mewSprite == null)
             throw new ArgumentException(gameObject.name);
         return mewSprite;
