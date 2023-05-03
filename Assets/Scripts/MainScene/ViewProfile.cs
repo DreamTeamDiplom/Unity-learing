@@ -11,12 +11,6 @@ public class ViewProfile : MonoBehaviour
     [SerializeField] private new TextMeshProUGUI name;
     [SerializeField] private Image icon;
     [SerializeField] private Button button;
-    public void Init(string name, Sprite icon)
-    {
-        this.name.text = name;
-        if (icon != null)
-            this.icon.sprite = icon;
-    }
 
     public void Init(Profile profile, UnityAction call)
     {
