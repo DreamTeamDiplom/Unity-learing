@@ -536,7 +536,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 1055043328}
   m_TextComponent: {fileID: 891790368}
   m_Placeholder: {fileID: 1578302361}
   m_ContentType: 0
@@ -1349,9 +1349,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b680ada92c263bc4a83ac7dcc92695ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardNotStart: {fileID: 4944793620765316323, guid: 6f87ffb2a65bac94f9ee5ce074e48b47, type: 3}
-  cardStart: {fileID: 6228471033879789670, guid: a202922944e1f5843bd4a53f40bd1e7a, type: 3}
-  cardComplite: {fileID: 133791328832333371, guid: ef4dd2b7d1c9d4a4c8b5c40bd0c19573, type: 3}
+  card:
+    notStart: {fileID: 4944793620765316323, guid: 6f87ffb2a65bac94f9ee5ce074e48b47, type: 3}
+    start: {fileID: 6228471033879789670, guid: a202922944e1f5843bd4a53f40bd1e7a, type: 3}
+    complete: {fileID: 133791328832333371, guid: ef4dd2b7d1c9d4a4c8b5c40bd0c19573, type: 3}
   icon: {fileID: 1322599512}
   content: {fileID: 502031715}
   inputSearch: {fileID: 1055043327}
