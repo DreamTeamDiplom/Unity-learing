@@ -22,12 +22,12 @@ public class ExtendedInputFieldEditor : InputFieldEditor
     {
         serializedObject.Update();
 
-        base.OnInspectorGUI();
+        EditorGUILayout.PropertyField(m_RightImage);
+        EditorGUILayout.PropertyField(m_StateInput);
 
         EditorGUILayout.Space();
 
-        EditorGUILayout.PropertyField(m_RightImage);
-        EditorGUILayout.PropertyField(m_StateInput);
+        base.OnInspectorGUI();
 
         serializedObject.ApplyModifiedProperties();
     }
