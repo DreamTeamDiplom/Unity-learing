@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead635de83dc1624fa0f72871cd35cc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 0f907f1e250bb8b49859f9e8def54fa1, type: 2}
+  m_Material: {fileID: 2100000, guid: 6844ad6ab161d4e419cf670de390bb48, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -329,6 +329,7 @@ GameObject:
   - component: {fileID: 6228471033879789666}
   - component: {fileID: 1365935607334623920}
   - component: {fileID: 9219156520676167270}
+  - component: {fileID: -8658849569101710057}
   m_Layer: 5
   m_Name: Course card start
   m_TagString: Untagged
@@ -387,7 +388,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6f64c75eaaec16e4296ea6ee3fe7d1a6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4055ccece68fa4943a02128f8ebd840b, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -441,6 +442,23 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &-8658849569101710057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6228471033879789670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25a818159bb399946adade539a5fb7bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  title: {fileID: 3130092443337206874}
+  icon: {fileID: 7087346162922532406}
+  numberIncomplete: {fileID: 8052324327644922084}
+  numberCompleted: {fileID: 7172142554030251984}
+  button: {fileID: 8806952299490158066}
 --- !u!1 &6228471033997930303
 GameObject:
   m_ObjectHideFlags: 0
@@ -499,7 +517,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead635de83dc1624fa0f72871cd35cc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 0f907f1e250bb8b49859f9e8def54fa1, type: 2}
+  m_Material: {fileID: 2100000, guid: 6844ad6ab161d4e419cf670de390bb48, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -709,7 +727,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead635de83dc1624fa0f72871cd35cc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 0f907f1e250bb8b49859f9e8def54fa1, type: 2}
+  m_Material: {fileID: 2100000, guid: 6844ad6ab161d4e419cf670de390bb48, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -955,7 +973,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 77eb2415734eaa94db4ff3e502081989, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e7db30e1cb6633f4bae9ac5773d7cdeb, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1166,7 +1184,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: fe4020611a13208458a6fc7c0f26c1a5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 35eb8433b8e75e447bb88b65dad78e9a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1256,7 +1274,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 35c410fb78efad14da3070c70aebd640, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ed05ced23c386eb42a28dc09e5f39b8c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

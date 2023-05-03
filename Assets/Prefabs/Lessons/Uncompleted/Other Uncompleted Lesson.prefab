@@ -109,6 +109,7 @@ GameObject:
   - component: {fileID: 9122444801148761130}
   - component: {fileID: 9122444801148761134}
   - component: {fileID: 745447975644314900}
+  - component: {fileID: -7241728079918226886}
   m_Layer: 5
   m_Name: Other Uncompleted Lesson
   m_TagString: Untagged
@@ -260,6 +261,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &-7241728079918226886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9122444801148761124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0cf45f367fe5214195c79ce3cd31733, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  number: {fileID: 2973581682594431973}
+  title: {fileID: 5547959779548596887}
 --- !u!1 &9122444801242161446
 GameObject:
   m_ObjectHideFlags: 0

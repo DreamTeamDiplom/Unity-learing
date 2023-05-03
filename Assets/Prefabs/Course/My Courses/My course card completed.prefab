@@ -180,7 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead635de83dc1624fa0f72871cd35cc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 0f907f1e250bb8b49859f9e8def54fa1, type: 2}
+  m_Material: {fileID: 2100000, guid: 6844ad6ab161d4e419cf670de390bb48, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -302,6 +302,7 @@ GameObject:
   - component: {fileID: 1826411090525147900}
   - component: {fileID: 871636657359009361}
   - component: {fileID: 3958784103024353398}
+  - component: {fileID: 2097647336094674226}
   m_Layer: 5
   m_Name: My course card completed
   m_TagString: Untagged
@@ -396,7 +397,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6f64c75eaaec16e4296ea6ee3fe7d1a6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4055ccece68fa4943a02128f8ebd840b, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -458,6 +459,25 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2097647336094674226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 871636657359009364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6d50b3b1e4ff3945b7a1e0b69a458e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  title: {fileID: 9038388302348705961}
+  icon: {fileID: 7330815886079573951}
+  titleLastLesson: {fileID: 0}
+  indicator: {fileID: 0}
+  line:
+    prefabUncomplete: {fileID: 0}
+    prefabComplete: {fileID: 0}
 --- !u!1 &871636657441882129
 GameObject:
   m_ObjectHideFlags: 0
@@ -537,7 +557,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead635de83dc1624fa0f72871cd35cc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 0f907f1e250bb8b49859f9e8def54fa1, type: 2}
+  m_Material: {fileID: 2100000, guid: 6844ad6ab161d4e419cf670de390bb48, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -663,7 +683,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4bf576468fbfb3a4c959ab5b9cfaceec, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f409a84458940914cab1445aa27bdc16, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

@@ -547,6 +547,7 @@ GameObject:
   - component: {fileID: 133791328832333375}
   - component: {fileID: 6971770127901277140}
   - component: {fileID: 291071623815840229}
+  - component: {fileID: -2864833591528925403}
   m_Layer: 5
   m_Name: Course Card Complete
   m_TagString: Untagged
@@ -659,6 +660,23 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &-2864833591528925403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133791328832333371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25a818159bb399946adade539a5fb7bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  title: {fileID: 5351052017239821914}
+  icon: {fileID: 133791330080787326}
+  numberIncomplete: {fileID: 0}
+  numberCompleted: {fileID: 5105297842144136885}
+  button: {fileID: 7166013853445925082}
 --- !u!1 &133791329371138663
 GameObject:
   m_ObjectHideFlags: 0
