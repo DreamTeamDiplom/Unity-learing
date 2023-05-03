@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
@@ -34,23 +37,22 @@ public class LoadProfileWindow : MonoBehaviour
 
         foreach (var profile in _dataProfiles.Profiles)
         {
-            var gameObjectProfile = Instantiate(_prefabProfile);
+            var gameObjectProfile = Instantiate(_prefabProfile, _content.transform, false);
 
             Sprite iconProfile = Resources.Load<Sprite>(Path.Combine("Icons", profile.PathIcon));
             if (iconProfile == null)
             {
-                StartCoroutine(LoadTexture(profile));
+                StartCoroutine(LoadTexture(profile, gameObjectProfile.GetComponent<ViewProfile>().Init));
             }
             else
             {
                 profile.Icon = iconProfile;
+                gameObjectProfile.GetComponent<ViewProfile>().Init(profile, () => AuthProfile(profile));
             }
-            gameObjectProfile.GetComponent<ViewProfile>().Init(profile, () => AuthProfile(profile));
-            gameObjectProfile.transform.SetParent(_content.transform, false);
         }
         StartCoroutine(ChangeSize());
     }
-    private IEnumerator LoadTexture(Profile profile)
+    private IEnumerator LoadTexture(Profile profile, Action<Profile, UnityAction> action)
     {
         var request = UnityWebRequestTexture.GetTexture(profile.PathIcon);
         yield return request.SendWebRequest();
@@ -59,6 +61,7 @@ public class LoadProfileWindow : MonoBehaviour
         sprite.name = profile.PathIcon;
         profile.Icon = sprite;
         request.Dispose();
+        action(profile, () => AuthProfile(profile));
     }
 
     private void AuthProfile(Profile profile)
