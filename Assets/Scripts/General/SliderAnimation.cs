@@ -6,8 +6,9 @@ using UnityEngine.UI;
 [RequireComponent(typeof(SliderSample))]
 public class SliderAnimation : MonoBehaviour
 {
-    [SerializeField] GameObject _text;
+    [SerializeField] private GameObject _text;
 
+    private MenuScript _menuScript;
     private SliderSample _sliderSampleScript;
     private void Awake()
     {
@@ -26,16 +27,25 @@ public class SliderAnimation : MonoBehaviour
             SliderSample_OnDisableSlider();
         }
 
+        _menuScript = FindObjectOfType<MenuScript>();
     }
 
     private void SliderSample_OnDisableSlider()
     {
+        if (_menuScript != null)
+        {
+            _menuScript.IsAnimation = false;
+        }
         PlayerPrefs.SetInt("Animation", 0);
         OffTurnAnimation();
     }
 
     private void SliderSample_OnEnableSlider()
     {
+        if (_menuScript != null)
+        {
+            _menuScript.IsAnimation = true;
+        }
         PlayerPrefs.SetInt("Animation", 1);
         OnTurnAnimation();
     }
