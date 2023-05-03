@@ -3,15 +3,17 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using System.IO.Compression;
+using UnityEditor;
 
 [CreateAssetMenu(fileName = "Data", menuName = "Data/Create Data", order = 51)]
 public class ObjectProfiles : ScriptableObject
 {
-    private string _pathSaveData;
     [SerializeField] private List<Profile> _profiles;
+    private string _pathSaveData;
+    private AssetBundle loadedAssetBundle = null;
 
     public List<Profile> Profiles => _profiles;
 
@@ -20,7 +22,7 @@ public class ObjectProfiles : ScriptableObject
     /// </summary>
     public void LoadData()
     {
-        _pathSaveData = Application.persistentDataPath + "/SaveData.dat";
+        _pathSaveData = Path.Combine(Application.persistentDataPath, "SaveData.dat");
         if (File.Exists(_pathSaveData))
             using (FileStream file = File.Open(_pathSaveData, FileMode.Open))
             {
@@ -78,24 +80,43 @@ public class ObjectProfiles : ScriptableObject
     {
         var profile = _profiles.Find(x => x.PathFolder == CurrentProfile.Profile.PathFolder);
         profile.Courses.Add(course);
-        var fromDir = Path.Combine(Application.streamingAssetsPath, "Courses", course.Title);
-        var toDir = Path.Combine(CurrentProfile.Profile.PathFolder, course.Title);
-        CopyDir(fromDir, toDir);
-        SaveData();
-    }
 
-    private void CopyDir(string fromDir, string toDir)
-    {
-        Directory.CreateDirectory(toDir);
-        foreach (string s1 in Directory.GetFiles(fromDir).Where(f => f.IndexOf("lessons") != -1))
+        DirectoryInfo dirInfo = new DirectoryInfo(Path.Combine(Application.streamingAssetsPath, "Courses"));
+
+        FileInfo fileInfo = dirInfo.GetFiles().Where(f => !f.Name.EndsWith(".meta") && 
+            f.Name.Contains(course.Title, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+        if (fileInfo == null)
         {
-            string s2 = Path.Combine(toDir, Path.GetFileName(s1));
-            File.Copy(s1, s2);
+            /* Обработка незагруженного курса */
+            return;
         }
-        foreach (string s in Directory.GetDirectories(fromDir))
+        try
         {
-            CopyDir(s,  Path.Combine(toDir, Path.GetFileName(s)));
+            loadedAssetBundle = AssetBundle.LoadFromFile(fileInfo.FullName);
+            var project = loadedAssetBundle.LoadAsset<TextAsset>("project");
+
+            string archiveFilePath = Path.Combine(Application.temporaryCachePath, "Project.zip");
+            string toDir = Path.Combine(CurrentProfile.Profile.PathFolder, course.Title);
+
+            File.WriteAllBytes(archiveFilePath, project.bytes);
+            if (File.Exists(archiveFilePath))
+            {
+                ZipFile.ExtractToDirectory(archiveFilePath, toDir);
+            }
         }
+        catch (Exception e)
+        {
+            Debug.LogError(e.Message);
+        }
+        finally
+        {
+			if (loadedAssetBundle != null)
+			{
+				loadedAssetBundle.Unload(false);
+			}
+        }
+
+        SaveData();
     }
 
     /// <summary>
@@ -105,6 +126,7 @@ public class ObjectProfiles : ScriptableObject
     public void DeleteProfile(Profile profile)
     {
         _profiles.Remove(profile);
+        Directory.Delete(profile.PathFolder, true);
         SaveData();
     }
 }
