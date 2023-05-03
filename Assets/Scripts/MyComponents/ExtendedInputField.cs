@@ -36,13 +36,18 @@ public class ExtendedInputField : InputField
         set => m_StateInput = value;
     }
 
+    protected override void Awake()
+    {
+        base.Awake();
+        extendedImage = GetComponent<Image>();
+    }
+
     protected override void OnEnable()
     {
         base.OnEnable();
         transition = Transition.SpriteSwap;
         if (Application.isPlaying)
         {
-            extendedImage = GetComponent<Image>();
             OnChangeTheme();
             Theme.Instance.OnChangeImage += OnChangeTheme;
         }
@@ -54,8 +59,8 @@ public class ExtendedInputField : InputField
         base.Reset();
         transition = Transition.SpriteSwap;
         var spriteState = new SpriteState();
-        spriteState.highlightedSprite = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Resources/White/Input/Normal/Highlighted.png");
-        spriteState.selectedSprite = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Resources/White/Input/Normal/Selected.png");
+        spriteState.highlightedSprite = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(Path.Combine("Assets", "Resources", "White", "Input", "Normal", "Highlighted.png"));
+        spriteState.selectedSprite = UnityEditor.AssetDatabase.LoadAssetAtPath<Sprite>(Path.Combine("Assets", "Resources", "White", "Input", "Normal", "Selected.png"));
         this.spriteState = spriteState;
         selectionColor = new Color(0, 0, 0, .5f);
     }
@@ -63,6 +68,10 @@ public class ExtendedInputField : InputField
 
     public void OnChangeTheme()
     {
+        if (extendedImage == null)
+        {
+            return;
+        }
         extendedImage.sprite = LoadSprite(extendedImage.sprite);
         var spriteState = new SpriteState();
         spriteState.highlightedSprite = LoadSprite(this.spriteState.highlightedSprite);
@@ -77,8 +86,7 @@ public class ExtendedInputField : InputField
         {
             return null;
         }
-        /* Ќе совсем правильное название, но пока так */
-        Sprite mewSprite = Resources.Load<Sprite>(Path.Combine(Theme.Instance.nameTheme, "Input", m_StateInput.ToString(), sprite.name));
+        Sprite mewSprite = Resources.Load<Sprite>(Path.Combine(Theme.Instance.ThemeType.ToString(), "Input", m_StateInput.ToString(), sprite.name));
         if (mewSprite == null)
             throw new ArgumentException(gameObject.name);
         return mewSprite;
@@ -86,6 +94,7 @@ public class ExtendedInputField : InputField
 
     protected override void OnDisable()
     {
+        base.OnDisable();
         if (Application.isPlaying)
         {
             Theme.Instance.OnChangeImage -= OnChangeTheme;

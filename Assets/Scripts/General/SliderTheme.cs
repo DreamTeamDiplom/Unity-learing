@@ -1,57 +1,62 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
-using Unity.VisualScripting;
 
+[RequireComponent(typeof(SliderSample))]
 public class SliderTheme : MonoBehaviour
 {
-    public static Themes theme;
-
-
-    [SerializeField] GameObject _circle;
     [SerializeField] GameObject _text;
 
+    private SliderSample _sliderSampleScript;
     private void Awake()
     {
-        //theme ??= new Themes();
-        if (PlayerPrefs.GetString("Theme") == "Black") 
-        {
-            Theme.Instance.nameTheme = "Black";
-            _circle.transform.DOLocalMoveX(-12, 0f);
-            _text.GetComponent<Text>().text = "Тёмная";
-        }
-        else
-        {
-            _circle.transform.DOLocalMoveX(-28, 0f);
-            _text.GetComponent<Text>().text = "Светлая";
-            Theme.Instance.nameTheme = "White";
-        }
-        Theme.Instance.Change();
-    }
+        _sliderSampleScript = GetComponent<SliderSample>();
+        _sliderSampleScript.OnEnableSlider += SliderSample_OnEnableSlider;
+        _sliderSampleScript.OnDisableSlider += SliderSample_OnDisableSlider;
 
-    private void Init()
-    {
         if (PlayerPrefs.GetString("Theme") == "Black")
         {
-            PlayerPrefs.SetString("Theme", "White");
-            _circle.transform.DOLocalMoveX(-28, .5f);
-            _text.GetComponent<Text>().text = "Светлая";
-            Theme.Instance.nameTheme = "White";
+            _sliderSampleScript.InitSlider(SliderSample.State.Off);
+            BlackTheme();
         }
         else
         {
-            PlayerPrefs.SetString("Theme", "Black");
-            Theme.Instance.nameTheme = "Black";
-            _circle.transform.DOLocalMoveX(-12, .5f);
-            _text.GetComponent<Text>().text = "Тёмная";
+            _sliderSampleScript.InitSlider(SliderSample.State.On);
+            WhiteTheme();
         }
+        
         Theme.Instance.Change();
     }
 
-    public void OnButtonSlider()
+    private void SliderSample_OnDisableSlider()
     {
-        Init();
+        PlayerPrefs.SetString("Theme", "Black");
+        BlackTheme();
+        Theme.Instance.Change();
+    }
+
+    private void SliderSample_OnEnableSlider()
+    {
+        PlayerPrefs.SetString("Theme", "White");
+        WhiteTheme();
+        Theme.Instance.Change();
+    }
+
+    private void BlackTheme()
+    {
+        _text.GetComponent<Text>().text = "РўС‘РјРЅР°СЏ";
+        Theme.Instance.ThemeType = ThemeEnum.Black;
+    }
+
+    private void WhiteTheme()
+    {
+        _text.GetComponent<Text>().text = "РЎРІРµС‚Р»Р°СЏ";
+        Theme.Instance.ThemeType = ThemeEnum.White;
+    }
+
+    private void OnDestroy()
+    {
+        _sliderSampleScript.OnEnableSlider -= SliderSample_OnEnableSlider;
+        _sliderSampleScript.OnDisableSlider -= SliderSample_OnDisableSlider;
     }
 }

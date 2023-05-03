@@ -1,24 +1,34 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using Unity.VisualScripting;
+using UnityEngine;
 
 [Serializable]
 public class ProfileCourse
 {
     public ProfileCourse(Course course)
     {
-        this.course = course;
+        title = course.Title;
+        lessons = course.Lessons.Select(l => new ProfileLesson(l)).ToList();
     }
-    private Course course;
 
-    public Course Course
+    private string title;
+    private List<ProfileLesson> lessons;
+    public string Title
     {
-        get => course;
+        get => title;
     }
-    public Lesson LastLesson
+
+    public List<ProfileLesson> Lessons
     {
-        get => course.Lessons.Where(l => !l.Finished).FirstOrDefault();
+        get => lessons;
+        //set => lessons = value;
+    }
+    public ProfileLesson LastLesson
+    {
+        get => lessons.FirstOrDefault(l => !l.Finished);
     }
     public bool Finished
     {
@@ -27,29 +37,30 @@ public class ProfileCourse
 
     public override string ToString()
     {
-        return string.Format("{0}, {1}, {2}", course.Title, LastLesson.Title, Finished);
+        return string.Format("{0}, {1}, {2}", title, LastLesson.Title, Finished);
     }
 }
 
-//[Serializable]
-//public class MyLesson
-//{
-//    public MyLesson(Lesson lesson)
-//    {
-//        this.lesson = lesson;
-//        //title = lesson.title;
-//        //description = lesson.description;
-//        //url = lesson.url;
-//    }
+[Serializable]
+public class ProfileLesson
+{
+    public ProfileLesson(Lesson lesson)
+    {
+        title = lesson.Title;
+    }
 
-//    //public string title;
-//    //public string description;
-//    //public string url;
-//    public Lesson lesson;
-//    public bool finish = false;
-    
-//    public override string ToString()
-//    {
-//        return string.Format("{0}, {1}, {2}, {3}", lesson.Title, lesson.Description, lesson.url, finish);
-//    }
-//}
+    private string title;
+    private bool finished = false;
+
+    public string Title
+    {
+        get => title;
+        //set => title = value;
+    }
+
+    public bool Finished
+    {
+        get => finished;
+        set => finished = value;
+    }
+}

@@ -1,26 +1,19 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ProfileCourses : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject infoProfile;
-    [SerializeField]
-    private GameObject prefabCourse;
-    [SerializeField]
-    private GameObject prefabLine;
-    [SerializeField]
-    private GameObject activeList;
-    [SerializeField]
-    private GameObject finishList;
+    [SerializeField] private GameObject infoProfile;
+    [SerializeField] private GameObject prefabCompleteCourse;
+    [SerializeField] private GameObject prefabUncompleteCourse;
+    [SerializeField] private GameObject activeList;
+    [SerializeField] private GameObject finishList;
 
-    private Text nameProfile;
-    private Image icon;
-    // Start is called before the first frame update
     void Awake()
     {
         infoProfile.GetComponentInChildren<Text>().text = CurrentProfile.Profile.Name;
@@ -28,66 +21,52 @@ public class ProfileCourses : MonoBehaviour
 
         foreach (var courseProfile in CurrentProfile.Profile.Courses)
         {
+            AssetBundle loadedAssetBundle = GetAssetBundle(courseProfile);
+            TextAsset jsonFile = loadedAssetBundle.LoadAsset<TextAsset>(courseProfile.Title);
+
+            Course course = JsonUtility.FromJson<Course>(jsonFile.text);
+            Sprite iconCourse = loadedAssetBundle.LoadAsset<Sprite>(course.PathIcon);
+            course.Icon = iconCourse;
+            loadedAssetBundle.Unload(false);
+            for (int i = 0; i < course.Lessons.Count; i++)
+            {
+                course.Lessons[i].Finished = courseProfile.Lessons[i].Finished;
+            }
+
+            GameObject gameObjectCourse;
             if (!courseProfile.Finished)
             {
-                var courseObj = Instantiate(prefabCourse);
-                var folderText = courseObj.transform.GetChild(0).GetChild(1);
-                //courseObj.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Image>().sprite = course.icon;
-                StartCoroutine(LoadTextureFromServer(courseObj, courseProfile));
-                folderText.GetChild(0).GetComponent<Text>().text = courseProfile.Course.Title;
-                var indicator = courseObj.transform.GetChild(1);
-                foreach (var lesson in courseProfile.Course.Lessons)
-                {
-                    var lineObj = Instantiate(prefabLine);
-                    if (lesson.Finished)
-                    {
-                        lineObj.GetComponent<Image>().color = Color.green;
-                    }
-                    else
-                    {
-                        //if (courseProfile.LastLesson == null)
-                        //    courseProfile.LastLesson = lesson;
-                        lineObj.GetComponent<Image>().color = Color.gray;
-                    }
-                    lineObj.transform.SetParent(indicator);
-
-                }
-                folderText.GetChild(1).GetComponent<Text>().text = courseProfile.LastLesson.Title;
-
-                courseObj.transform.SetParent(activeList.transform, false);
-                courseObj.GetComponent<Button>().onClick.AddListener(() => {
-                    SceneManager.LoadScene("Course");
-                    CurrentProfile.CurrentCourse = courseProfile;
-                    });
+                gameObjectCourse = Instantiate(prefabUncompleteCourse, activeList.transform, false);
+                int numberUncompleteLesson = courseProfile.Lessons.FindAll(l => !l.Finished).Count();
+                gameObjectCourse.GetComponent<ViewProfileCourse>().Init(courseProfile.Title, iconCourse, numberUncompleteLesson, 
+                    courseProfile.Lessons.Count - numberUncompleteLesson, courseProfile.LastLesson.Title);
             }
             else
             {
-                var courseObj = Instantiate(prefabCourse);
-                var folderText = courseObj.transform.GetChild(0).GetChild(1);
-                folderText.GetChild(0).GetComponent<Text>().text = courseProfile.Course.Title;
-                StartCoroutine(LoadTextureFromServer(courseObj, courseProfile));
-                courseObj.transform.GetChild(0).GetChild(0).GetChild(0).GetComponentInChildren<Image>().sprite = courseProfile.Course.Icon;
-                courseObj.transform.SetParent(finishList.transform, false);
-                courseObj.GetComponent<Button>().onClick.AddListener(() => {
-                    SceneManager.LoadScene("Course");
-                    CurrentProfile.CurrentCourse = courseProfile;
-                });
+                gameObjectCourse = Instantiate(prefabCompleteCourse, activeList.transform, false);
+                gameObjectCourse.GetComponent<ViewProfileCourse>().Init(course.Title, iconCourse);
             }
+            gameObjectCourse.GetComponent<Button>().onClick.AddListener(() => {
+                SceneManager.LoadScene("Course");
+                CurrentProfile.CurrentCourse = course;
+                
+            });
         }
+    }
 
-        IEnumerator LoadTextureFromServer(GameObject courseObj, ProfileCourse course)
+    private AssetBundle GetAssetBundle(ProfileCourse courseProfile)
+    {
+        DirectoryInfo dirInfo = new DirectoryInfo(Path.Combine(Application.streamingAssetsPath, "Courses"));
+
+        FileInfo fileInfo = dirInfo.GetFiles().Where(f => !f.Name.EndsWith(".meta") &&
+            f.Name.Contains(courseProfile.Title, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+
+        if (fileInfo == null)
         {
-            var request = UnityWebRequestTexture.GetTexture(course.Course.PathIcon);
-            yield return request.SendWebRequest();
-            var texture = DownloadHandlerTexture.GetContent(request);
-            var sprite = Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100.0f);
-            course.Course.Icon = sprite;
-            courseObj.transform.GetChild(0).GetChild(0).GetChild(0).GetComponentInChildren<Image>().sprite = course.Course.Icon;
-            request.Dispose();
+            /* Обработка незагруженного курса */
+            return null;
         }
-        //var line = indicator.transform.GetChild(0);
-        /* Цилк перебора */
 
+        return AssetBundle.LoadFromFile(fileInfo.FullName);
     }
 }
-

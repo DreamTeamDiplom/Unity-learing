@@ -18,8 +18,8 @@ public class ExtendedText : Text
     protected override void Reset()
     {
         base.Reset();
-        font = UnityEditor.AssetDatabase.LoadAssetAtPath<Font>("Assets/Fonts/Inter.ttf");
-        material = UnityEditor.AssetDatabase.LoadAssetAtPath<Material>("Assets/Resources/White/Text.mat");
+        font = UnityEditor.AssetDatabase.LoadAssetAtPath<Font>(Path.Combine("Assets", "Fonts", "Inter.ttf"));
+        material = UnityEditor.AssetDatabase.LoadAssetAtPath<Material>(Path.Combine("Assets", "Resources", "White", "Text.mat"));
         raycastTarget = false;
     }
 #endif
@@ -27,7 +27,7 @@ public class ExtendedText : Text
     {
         if (m_Material != null)
         {
-            Material material = Resources.Load<Material>(Path.Combine(Theme.Instance.nameTheme, m_Material.name));
+            Material material = Resources.Load<Material>(Path.Combine(Theme.Instance.ThemeType.ToString(), m_Material.name));
             if (material == null)
                 throw new ArgumentException(gameObject.name);
             this.material = material;

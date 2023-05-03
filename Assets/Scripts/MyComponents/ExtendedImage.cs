@@ -18,10 +18,10 @@ public class ExtendedImage : Image
     {
         if (sprite != null)
         {
-            Sprite sprite = Resources.Load<Sprite>(Path.Combine(Theme.Instance.nameTheme, "Button", this.sprite.name));
+            Sprite sprite = Resources.Load<Sprite>(Path.Combine(Theme.Instance.ThemeType.ToString(), "Button", this.sprite.name));
             if (sprite == null)
             {
-                sprite = Resources.Load<Sprite>(Path.Combine(Theme.Instance.nameTheme, this.sprite.name));
+                sprite = Resources.Load<Sprite>(Path.Combine(Theme.Instance.ThemeType.ToString(), this.sprite.name));
             }
             if (sprite == null)
                 throw new ArgumentException(gameObject.name);
