@@ -180,7 +180,7 @@ public class MyProfile : MonoBehaviour
             objectProfiles.SaveData();
 
             PlayerPrefs.SetString("Theme", CurrentProfile.Profile.Setting.Theme.ToString());
-            Theme.Instance.NameTheme = CurrentProfile.Profile.Setting.Theme.ToString();
+            Theme.Instance.ThemeType = CurrentProfile.Profile.Setting.Theme;
             Theme.Instance.Change();
             if (CurrentProfile.Profile.Courses.Count == 0)
             {

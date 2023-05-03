@@ -45,13 +45,13 @@ public class SliderTheme : MonoBehaviour
     private void BlackTheme()
     {
         _text.GetComponent<Text>().text = "Тёмная";
-        Theme.Instance.NameTheme = "Black";
+        Theme.Instance.ThemeType = ThemeEnum.Black;
     }
 
     private void WhiteTheme()
     {
         _text.GetComponent<Text>().text = "Светлая";
-        Theme.Instance.NameTheme = "White";
+        Theme.Instance.ThemeType = ThemeEnum.White;
     }
 
     private void OnDestroy()

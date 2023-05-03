@@ -83,8 +83,7 @@ public class ExtendedInputField : InputField
         {
             return null;
         }
-        /* �� ������ ���������� ��������, �� ���� ��� */
-        Sprite mewSprite = Resources.Load<Sprite>(Path.Combine(Theme.Instance.NameTheme, "Input", m_StateInput.ToString(), sprite.name));
+        Sprite mewSprite = Resources.Load<Sprite>(Path.Combine(Theme.Instance.ThemeType.ToString(), "Input", m_StateInput.ToString(), sprite.name));
         if (mewSprite == null)
             throw new ArgumentException(gameObject.name);
         return mewSprite;

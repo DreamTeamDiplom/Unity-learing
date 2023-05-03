@@ -18,9 +18,6 @@ public class ChangePasswordWindow : ModalWindow
 
     [HideInInspector] public Profile profile;
 
-    /// <summary>
-    /// ����� ��������� Email � �������� ������ ������������ � ������ ������ ������ �� �����
-    /// </summary>
     public  void ChangePassword()
     {
         bool error = false;
@@ -41,11 +38,11 @@ public class ChangePasswordWindow : ModalWindow
 
             CurrentProfile.Profile = profile;
             PlayerPrefs.SetString("Theme", profile.Setting.Theme.ToString());
-            Theme.Instance.NameTheme = profile.Setting.Theme.ToString();
+            Theme.Instance.ThemeType = profile.Setting.Theme;
             Theme.Instance.Change();
             if (CurrentProfile.Profile.Courses.Count == 0)
             {
-                SceneManager.LoadScene("All�ourses");
+                SceneManager.LoadScene("AllCourses");
             }
             else
             {
