@@ -149,6 +149,7 @@ public class MyProfile : MonoBehaviour
         profile.Name = textName.text;
         profile.Email = textEmail.text;
         profile.PathFolder = tempPath;
+        profile.PathIcon = icon.sprite.name;
         objectProfiles.SaveData();
         if (CurrentProfile.Profile.Courses.Count == 0)
         {
