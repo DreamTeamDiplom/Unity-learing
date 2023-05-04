@@ -25,7 +25,7 @@ public class MenuScript : MonoBehaviour
 
     private RectTransform _menuTransform;
 
-    public bool IsAnimation;
+    [HideInInspector] public bool IsAnimation;
     private void Awake()
     {
         var objs = GameObject.FindGameObjectsWithTag("Menu");
@@ -103,11 +103,6 @@ public class MenuScript : MonoBehaviour
     public void MinimizeMenu()
     {
         _menuTransform.DOAnchorPosX(-_menuTransform.sizeDelta.x, .5f).OnComplete(() => _menuWindow.SetActive(false));
-    }
-
-    public void ApplicationQuit()
-    {
-        Application.Quit();
     }
 
     public void OnPointerEnter(GameObject gameObject)
