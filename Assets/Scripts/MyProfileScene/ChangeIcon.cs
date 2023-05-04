@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class ChangeIcon : MonoBehaviour
+public class ChangeIcon : ModalWindow
 {
     [SerializeField] private GameObject iconGameObject;
     [SerializeField] private Image mainIcon;
@@ -17,8 +17,9 @@ public class ChangeIcon : MonoBehaviour
 
     private int index;
 
-    private void OnEnable()
+    private new void OnEnable()
     {
+        base.OnEnable();
         index = -1;
         for (int i = 0; i < 3; i++)
         {
@@ -40,8 +41,6 @@ public class ChangeIcon : MonoBehaviour
             icons = tempList.ToArray();
             index = 10;
         }
-        transform.GetChild(0).DOPunchScale(Vector3.one / 10, .5f, 1, 0);
-
     }
 
     private IEnumerator LoadTextureFromServer(string[] url, Action<Sprite> action)
