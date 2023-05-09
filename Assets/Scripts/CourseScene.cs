@@ -74,7 +74,8 @@ public class CourseScene : MonoBehaviour
 
             if (lesson == lessonFirstUnfinish)
             {
-                string message = string.Format("{0}\n{1}", i, CurrentProfile.Profile.PathFolder);
+                string message = string.Format("{0}\n{1}\n{2}", i, CurrentProfile.Profile.PathFolder, lesson == CurrentProfile.CurrentCourse.Lessons[CurrentProfile.CurrentCourse.Lessons.Count - 1]);
+
                 TryWriteFileToMemory(message);
             }
         }
@@ -298,20 +299,6 @@ public class CourseScene : MonoBehaviour
         if (lessonsSprites != null)
         {
             lessonsSprites.Unload(false);
-        }
-    }
-    public void ChangeScene()
-    {
-        SceneManager.LoadScene("AllCourses");
-    }
-
-    public void DoToStart()
-    {
-        var unityProcess = Process.GetProcessesByName("unity").FirstOrDefault();
-        if (unityProcess == null)
-        {
-            /* Возможно на других ОС неправильно работает */
-            Process.Start(@"C:\Program Files\Unity Hub\Unity Hub.exe");
         }
     }
 }
