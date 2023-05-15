@@ -24,7 +24,6 @@ public class ProfileCourse
     public List<ProfileLesson> Lessons
     {
         get => lessons;
-        //set => lessons = value;
     }
     public ProfileLesson LastLesson
     {
@@ -55,7 +54,6 @@ public class ProfileLesson
     public string Title
     {
         get => title;
-        //set => title = value;
     }
 
     public bool Finished

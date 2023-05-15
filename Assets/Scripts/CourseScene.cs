@@ -6,9 +6,7 @@ using UnityEngine.Video;
 using System.IO;
 using TMPro;
 using UnityEngine.SceneManagement;
-using System.Diagnostics;
 using System.IO.MemoryMappedFiles;
-using System.Reflection;
 
 public class CourseScene : MonoBehaviour
 {
@@ -138,17 +136,17 @@ public class CourseScene : MonoBehaviour
 
     private string GetDescription(Lesson lesson)
     {
-        if (lesson.Description.Length < 1)
+        if (lesson.Content.Length < 1)
         {
             return "Нет описания!";
         }
-        else if (lesson.Description.Length == 1)
+        else if (lesson.Content.Length == 1)
         {
-            return lesson.Description[0];
+            return lesson.Content[0];
         }
         else
         {
-            return lesson.Description.Aggregate((x, y) => x + "\n" + y);
+            return lesson.Content.Aggregate((x, y) => x + "\n" + y);
         }
     }
 
@@ -209,7 +207,7 @@ public class CourseScene : MonoBehaviour
         {
             if (TryReadFileToMemory(out string message))
             {
-                string[] messages = message.Split("\n");
+                string[] messages = message.Split('\n');
 
                 if (messages[1] != CurrentProfile.Profile.PathFolder)
                 {
@@ -236,7 +234,6 @@ public class CourseScene : MonoBehaviour
                         windowsActive = true;
                     }
                     sharedMemory = null;
-                    //TryWriteFileToMemory("test", "");
                     SceneManager.LoadScene("Course");
                 }
             }

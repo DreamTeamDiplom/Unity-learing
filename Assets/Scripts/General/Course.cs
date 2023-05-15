@@ -53,7 +53,7 @@ public class Course
 
     public override string ToString()
     {
-        return string.Format("{0}, {1}", title);
+        return string.Format("{0}, {1}", title, Finished);
     }
 }
 
@@ -61,7 +61,7 @@ public class Course
 public class Lesson
 {
     [SerializeField][HideInInspector] private string title;
-    [SerializeField][HideInInspector] private string[] description;
+    [SerializeField][HideInInspector] private string[] content;
     [SerializeField][HideInInspector] private string videoUrl;
     private bool finished = false;
 
@@ -69,9 +69,9 @@ public class Lesson
     {
         get => title;
     }
-    public string[] Description
+    public string[] Content
     {
-        get => description;
+        get => content;
     }
     public string VideoUrl
     {
@@ -84,6 +84,6 @@ public class Lesson
     }
     public override string ToString()
     {
-        return string.Format("{0}, {1}, {2}", title, description[0], finished);
+        return string.Format("{0}, {1}", title, finished);
     }
 }
