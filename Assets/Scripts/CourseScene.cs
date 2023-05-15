@@ -236,6 +236,21 @@ public class CourseScene : MonoBehaviour
                     sharedMemory = null;
                     SceneManager.LoadScene("Course");
                 }
+                else if (bool.TryParse(messages[0], out bool result))
+                {
+                    if (result)
+                    {
+                        var course = CurrentProfile.Profile.Courses.FirstOrDefault(c => c.Title == CurrentProfile.CurrentCourse.Title);
+                        for (int i = 0; i < CurrentProfile.CurrentCourse.Lessons.Count; i++)
+                        {
+                            CurrentProfile.CurrentCourse.Lessons[i].Finished = false;
+                            course.Lessons[index].Finished = false;
+                        }
+                        _dataProfiles.SaveData();
+                        sharedMemory = null;
+                        SceneManager.LoadScene("Course");
+                    }
+                }
             }
 
         }
