@@ -155,10 +155,11 @@ public class CourseScene : MonoBehaviour
         if (lesson == null)
             return;
 
-
-        foreach (Transform child in contentLessons.transform) {
-            child.GetComponentInChildren<Button>().interactable = true;
+        for (int i = 0; i < CurrentProfile.CurrentCourse.Lessons.Count; i++)
+        {
+            contentLessons.transform.GetChild(i).GetComponentInChildren<Button>().interactable = lesson != CurrentProfile.CurrentCourse.Lessons[i];
         }
+
         vPlayer.Stop();
         windowLoading.SetActive(true);
         windowLoading.transform.GetChild(0).gameObject.SetActive(true);
