@@ -42,19 +42,24 @@ public class AuthProfileWindow : ModalWindow
         error |= _checkingError.CheckingInput(hash.ToString() == profile.Password);
         if (!error)
         {
-            CurrentProfile.Profile = profile;
-            PlayerPrefs.SetString("Theme", profile.Setting.Theme.ToString());
-            PlayerPrefs.SetInt("Animation", Convert.ToInt32(profile.Setting.Animation));
-            Theme.Instance.ThemeType = profile.Setting.Theme;
-            Theme.Instance.Change();
-            if (CurrentProfile.Profile.Courses.Count == 0)
-            {
-                SceneManager.LoadScene("AllCourses");
-            }
-            else
-            {
-                SceneManager.LoadScene("ProfileCourses");
-            }
+            SuccessfulAuth(profile);
+        }
+    }
+
+    public void SuccessfulAuth(Profile profile)
+    {
+        CurrentProfile.Profile = profile;
+        PlayerPrefs.SetString("Theme", profile.Setting.Theme.ToString());
+        PlayerPrefs.SetInt("Animation", Convert.ToInt32(profile.Setting.Animation));
+        Theme.Instance.ThemeType = profile.Setting.Theme;
+        Theme.Instance.Change();
+        if (CurrentProfile.Profile.Courses.Count == 0)
+        {
+            SceneManager.LoadScene("AllCourses");
+        }
+        else
+        {
+            SceneManager.LoadScene("ProfileCourses");
         }
     }
 

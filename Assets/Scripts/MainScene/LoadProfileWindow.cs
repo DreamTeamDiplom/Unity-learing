@@ -66,8 +66,16 @@ public class LoadProfileWindow : MonoBehaviour
 
     private void AuthProfile(Profile profile)
     {
-        _authProfileScript.profile = profile;
-        _windowAuthProfile.SetActive(true);
+
+        if (profile.Password == profile.HashData(""))
+        {
+            _windowAuthProfile.GetComponentInChildren<AuthProfileWindow>().SuccessfulAuth(profile);
+        }
+        else
+        {
+            _authProfileScript.profile = profile;
+            _windowAuthProfile.SetActive(true);
+        }
     }
 
     private IEnumerator ChangeSize()
