@@ -28,7 +28,37 @@ public class ExtendedScrollRect : ScrollRect
                 return;
             }
             scroll = verticalScrollbar.handleRect.gameObject;
+
+            onValueChanged.AddListener((vector) =>
+            {
+                ShowScroll();
+                HideScroll();
+            });
         }
+        
+    }
+
+    private void Update()
+    {
+        if (Application.isPlaying)
+        {
+            if (Input.GetKey(KeyCode.PageDown))
+            {
+                verticalNormalizedPosition = 0;
+            }
+            else if (Input.GetKey(KeyCode.PageUp))
+            {
+                verticalNormalizedPosition = 1;
+            }
+            else
+            {
+                float verticalInput = Input.GetAxis("Vertical");
+                float contentHeight = content.rect.height;
+                float scrollAmount = Mathf.Min(scrollSensitivity / contentHeight, 1f);
+                verticalNormalizedPosition -= verticalInput * scrollAmount;
+            }
+        }
+
     }
 
     public override void OnScroll(PointerEventData eventData)
@@ -41,18 +71,31 @@ public class ExtendedScrollRect : ScrollRect
     public override void OnBeginDrag(PointerEventData eventData)
     {
         base.OnBeginDrag(eventData);
-        scroll.SetActive(true);
-        scroll.GetComponent<ExtendedImage>().DOFade(1, 0.5f);
+        ShowScroll();
     }
 
     public override void OnEndDrag(PointerEventData eventData)
     {
         base.OnEndDrag(eventData);
+        HideScroll();
+    }
+
+    protected override void OnDisable()
+    {
+        if (Application.isPlaying)
+        base.OnDisable();
+    }
+
+    private void ShowScroll()
+    {
+        scroll.SetActive(true);
+        scroll.GetComponent<ExtendedImage>().DOFade(1, 0.5f);
+    }
+
+    private void HideScroll()
+    {
         if (!co.IsUnityNull())
             StopCoroutine(co);
         co = StartCoroutine(Active());
     }
-
-    
-
 }
