@@ -82,8 +82,7 @@ public class MenuScript : MonoBehaviour
         {
             if (!_menuWindow.activeSelf)
             {
-                _menuWindow.SetActive(true);
-                _menuTransform.DOAnchorPosX(0, .5f);
+                ShowMenu();
             }
             else
             {
@@ -92,7 +91,13 @@ public class MenuScript : MonoBehaviour
         }
     }
 
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    public void ShowMenu()
+    {
+        _menuWindow.SetActive(true);
+        _menuTransform.DOAnchorPosX(0, .5f);
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         foreach (var gameObject in new GameObject[] { _myProfile, _allCourses, _myCourses, _setting, _exitProfile })
         {
