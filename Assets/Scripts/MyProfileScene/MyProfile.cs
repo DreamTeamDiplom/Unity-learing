@@ -92,7 +92,6 @@ public class MyProfile : MonoBehaviour
     private void PathProfile()
     {
         var settings = textPath.GetGenerationSettings(Vector2.zero);
-        textPath.text = "..." + textPath.text;
         var preferredWidth = textPath.cachedTextGeneratorForLayout.GetPreferredWidth(textPath.text, settings) / textPath.pixelsPerUnit;
         while (preferredWidth > path.GetComponent<RectTransform>().sizeDelta.x)
         {
