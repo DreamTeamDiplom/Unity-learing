@@ -23,7 +23,7 @@ public class CourseScene : MonoBehaviour
 
     [Header("Header")]
     [SerializeField] private Text titleCourse;
-    [SerializeField] private GameObject icon;
+    [SerializeField] private GameObject infoProfile;
 
     [Header("Lessons")]
     [SerializeField] private PrefabsLesson lessons;
@@ -48,8 +48,8 @@ public class CourseScene : MonoBehaviour
     private MemoryMappedFile sharedMemory;
     private void Awake()
     {
-        icon.GetComponentInChildren<Image>().sprite = CurrentProfile.Profile.Icon;
-        icon.GetComponentInChildren<Text>().text = CurrentProfile.Profile.Name;
+        infoProfile.GetComponentInChildren<Image>().sprite = CurrentProfile.Profile.Icon;
+        infoProfile.GetComponentInChildren<Text>().text = CurrentProfile.Profile.Name;
 
         lessonsSprites = GetAssetBundleLessons();
 

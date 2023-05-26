@@ -7,7 +7,7 @@ using static Unity.VisualScripting.Member;
 
 public class CourseDescriptionScene : MonoBehaviour
 {
-    [SerializeField] private GameObject icon;
+    [SerializeField] private GameObject infoProfile;
     [SerializeField] private Text titleCourse;
     [SerializeField] private Text descriptionCourse;
     [SerializeField] private Image iconCourse;
@@ -21,8 +21,8 @@ public class CourseDescriptionScene : MonoBehaviour
     {
         textButton = button.GetComponentInChildren<Text>();
 
-        icon.GetComponentInChildren<Image>().sprite = CurrentProfile.Profile.Icon;
-        icon.GetComponentInChildren<Text>().text = CurrentProfile.Profile.Name;
+        infoProfile.GetComponentInChildren<Image>().sprite = CurrentProfile.Profile.Icon;
+        infoProfile.GetComponentInChildren<Text>().text = CurrentProfile.Profile.Name;
 
         titleCourse.text = CurrentProfile.CurrentCourse.Title;
         descriptionCourse.text = CurrentProfile.CurrentCourse.Description;

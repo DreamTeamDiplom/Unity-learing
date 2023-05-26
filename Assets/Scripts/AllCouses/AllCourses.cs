@@ -24,7 +24,7 @@ public class AllCourses : MonoBehaviour
     [SerializeField] private CardsCourse card;
 
     [Space(10)]
-    [SerializeField] private GameObject icon;
+    [SerializeField] private GameObject infoProfile;
     [SerializeField] private GameObject content;
     [SerializeField] private InputField inputSearch;
     [SerializeField] private ObjectProfiles objectProfiles;
@@ -94,8 +94,8 @@ public class AllCourses : MonoBehaviour
     }
     private void Start()
     {
-        icon.GetComponent<Image>().sprite = CurrentProfile.Profile.Icon;
-        icon.GetComponentInChildren<Text>().text = CurrentProfile.Profile.Name;
+        infoProfile.GetComponentInChildren<Image>().sprite = CurrentProfile.Profile.Icon;
+        infoProfile.GetComponentInChildren<Text>().text = CurrentProfile.Profile.Name;
     }
 
     private void FilterCard(string value)
