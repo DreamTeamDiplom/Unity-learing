@@ -1814,7 +1814,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 40}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 352, y: 192}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &262156976
@@ -2047,7 +2047,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead635de83dc1624fa0f72871cd35cc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 0f907f1e250bb8b49859f9e8def54fa1, type: 2}
+  m_Material: {fileID: 2100000, guid: 6844ad6ab161d4e419cf670de390bb48, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -11228,7 +11228,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 39.999996}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 352, y: 192}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1712384876
@@ -11404,19 +11404,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 843385959}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1750121946}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1735205997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11633,7 +11621,7 @@ RectTransform:
   m_Children:
   - {fileID: 1712384875}
   m_Father: {fileID: 606091228}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -11946,7 +11934,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 314c554e361d3f4448aca4ba9f4d11fa, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e4f5369fc9a6a4c45bb4a65f8abef702, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -12409,7 +12397,6 @@ GameObject:
   - component: {fileID: 1865165851}
   - component: {fileID: 1865165850}
   - component: {fileID: 1865165854}
-  - component: {fileID: 1865165855}
   - component: {fileID: 1865165853}
   m_Layer: 5
   m_Name: Load Profile Window
