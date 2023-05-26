@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using DG.Tweening;
+using UnityEditor;
 
 [AddComponentMenu("UI/Scroll Rect Exrended", 37)]
 public class ExtendedScrollRect : ScrollRect
@@ -34,8 +35,9 @@ public class ExtendedScrollRect : ScrollRect
                 ShowScroll();
                 HideScroll();
             });
+            verticalNormalizedPosition = 1;
         }
-        
+
     }
 
     private void Update()
@@ -58,7 +60,6 @@ public class ExtendedScrollRect : ScrollRect
                 verticalNormalizedPosition -= verticalInput * scrollAmount;
             }
         }
-
     }
 
     public override void OnScroll(PointerEventData eventData)
@@ -78,12 +79,6 @@ public class ExtendedScrollRect : ScrollRect
     {
         base.OnEndDrag(eventData);
         HideScroll();
-    }
-
-    protected override void OnDisable()
-    {
-        if (Application.isPlaying)
-        base.OnDisable();
     }
 
     private void ShowScroll()
