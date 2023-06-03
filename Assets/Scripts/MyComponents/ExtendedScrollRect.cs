@@ -44,13 +44,28 @@ public class ExtendedScrollRect : ScrollRect
     {
         if (Application.isPlaying)
         {
-            if (Input.GetKey(KeyCode.PageDown))
+            if (Input.GetKeyUp(KeyCode.End))
             {
-                verticalNormalizedPosition = 0;
+                this.DOVerticalNormalizedPos(0, .5f);
             }
-            else if (Input.GetKey(KeyCode.PageUp))
+            else if (Input.GetKeyUp(KeyCode.Home))
             {
-                verticalNormalizedPosition = 1;
+                this.DOVerticalNormalizedPos(1, .5f);
+            }
+            else if (Input.GetKeyUp(KeyCode.PageDown))
+            {
+                float viewportHeight = viewport.rect.height;
+                float contentHeight = content.rect.height - viewportHeight;
+                var newVerticalNormalizedPosition = verticalNormalizedPosition - viewportHeight / contentHeight;
+                this.DOVerticalNormalizedPos(newVerticalNormalizedPosition < 0 ? 0 : newVerticalNormalizedPosition, .5f);
+
+            }
+            else if (Input.GetKeyUp(KeyCode.PageUp))
+            {
+                float viewportHeight = viewport.rect.height;
+                float contentHeight = content.rect.height - viewportHeight;
+                var newVerticalNormalizedPosition = verticalNormalizedPosition + viewportHeight / contentHeight;
+                this.DOVerticalNormalizedPos(newVerticalNormalizedPosition > 1 ? 1 : newVerticalNormalizedPosition, .5f);
             }
             else
             {
