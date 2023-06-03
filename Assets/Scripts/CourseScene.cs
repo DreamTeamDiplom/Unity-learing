@@ -222,6 +222,11 @@ public class CourseScene : MonoBehaviour
                     {
                         return;
                     }
+
+                    if (CurrentProfile.CurrentCourse.Lessons[index].Finished)
+                    {
+                        return;
+                    }
                     CurrentProfile.CurrentCourse.Lessons[index].Finished = true;
 
                     var course = CurrentProfile.Profile.Courses.FirstOrDefault(c => c.Title == CurrentProfile.CurrentCourse.Title);
@@ -234,21 +239,24 @@ public class CourseScene : MonoBehaviour
                     {
                         windowsActive = true;
                     }
-                    sharedMemory = null;
                     SceneManager.LoadScene("Course");
                 }
                 else if (bool.TryParse(messages[0], out bool result))
                 {
                     if (result)
                     {
+                        var lesson = CurrentProfile.CurrentCourse.Lessons.Where(l => l.Finished).FirstOrDefault();
+                        if (lesson == null)
+                        {
+                            return;
+                        }
                         var course = CurrentProfile.Profile.Courses.FirstOrDefault(c => c.Title == CurrentProfile.CurrentCourse.Title);
                         for (int i = 0; i < CurrentProfile.CurrentCourse.Lessons.Count; i++)
                         {
                             CurrentProfile.CurrentCourse.Lessons[i].Finished = false;
-                            course.Lessons[index].Finished = false;
+                            course.Lessons[i].Finished = false;
                         }
                         _dataProfiles.SaveData();
-                        sharedMemory = null;
                         SceneManager.LoadScene("Course");
                     }
                 }
