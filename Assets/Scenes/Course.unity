@@ -2285,6 +2285,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+  clickKey: 0
 --- !u!114 &1216767320
 MonoBehaviour:
   m_ObjectHideFlags: 0
