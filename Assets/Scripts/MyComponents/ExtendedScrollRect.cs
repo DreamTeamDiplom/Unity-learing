@@ -10,6 +10,8 @@ using UnityEditor;
 [AddComponentMenu("UI/Scroll Rect Exrended", 37)]
 public class ExtendedScrollRect : ScrollRect
 {
+    [SerializeField] private bool clickKey = true;
+
     private GameObject scroll;
 
     private Coroutine co;
@@ -42,7 +44,7 @@ public class ExtendedScrollRect : ScrollRect
 
     private void Update()
     {
-        if (Application.isPlaying)
+        if (Application.isPlaying && clickKey)
         {
             if (Input.GetKey(KeyCode.PageDown))
             {
@@ -60,6 +62,19 @@ public class ExtendedScrollRect : ScrollRect
                 verticalNormalizedPosition -= verticalInput * scrollAmount;
             }
         }
+    }
+
+    private void ShowScroll()
+    {
+        scroll.SetActive(true);
+        scroll.GetComponent<ExtendedImage>().DOFade(1, 0.5f);
+    }
+
+    private void HideScroll()
+    {
+        if (!co.IsUnityNull())
+            StopCoroutine(co);
+        co = StartCoroutine(Active());
     }
 
     public override void OnScroll(PointerEventData eventData)
@@ -81,16 +96,5 @@ public class ExtendedScrollRect : ScrollRect
         HideScroll();
     }
 
-    private void ShowScroll()
-    {
-        scroll.SetActive(true);
-        scroll.GetComponent<ExtendedImage>().DOFade(1, 0.5f);
-    }
-
-    private void HideScroll()
-    {
-        if (!co.IsUnityNull())
-            StopCoroutine(co);
-        co = StartCoroutine(Active());
-    }
+    
 }
